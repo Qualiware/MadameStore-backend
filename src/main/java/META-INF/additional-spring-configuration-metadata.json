@@ -1,0 +1,77 @@
+{"properties": [
+  {
+    "name": "app.api.version",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.version'"
+  },
+  {
+    "name": "app.api.base",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.base'"
+  },
+  {
+    "name": "app.api.swagger.title",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.swagger.title'"
+  },
+  {
+    "name": "app.api.swagger.base-package",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.swagger.base-package'"
+  },
+  {
+    "name": "app.api.auth.url-redefinir-senha",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.auth.url-redefinir-senha'"
+  },
+  {
+    "name": "app.report.path",
+    "type": "java.lang.String",
+    "description": "A description for 'app.report.path'"
+  },
+  {
+    "name": "app.report.output.path",
+    "type": "java.lang.String",
+    "description": "A description for 'app.report.output.path'"
+  },
+  {
+    "name": "org.keycloak.admin.client.server-url",
+    "type": "java.lang.String",
+    "description": "A description for 'org.keycloak.admin.client.server-url'"
+  },
+  {
+    "name": "org.keycloak.admin.client.realm",
+    "type": "java.lang.String",
+    "description": "A description for 'org.keycloak.admin.client.realm'"
+  },
+  {
+    "name": "org.keycloak.admin.client.client-id",
+    "type": "java.lang.String",
+    "description": "A description for 'org.keycloak.admin.client.client-id'"
+  },
+  {
+    "name": "org.keycloak.admin.client.client-secret",
+    "type": "java.lang.String",
+    "description": "A description for 'org.keycloak.admin.client.client-secret'"
+  },
+  {
+    "name": "org.keycloak.admin.client.federation-link",
+    "type": "java.lang.String",
+    "description": "A description for 'org.keycloak.admin.client.federation-link'"
+  },
+  {
+    "name": "app.api.security.jwt.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.security.jwt.secret'"
+  },
+  {
+    "name": "app.api.security.jwt.issuer",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.security.jwt.issuer'"
+  },
+  {
+    "name": "app.api.origem",
+    "type": "java.lang.String",
+    "description": "A description for 'app.api.origem'"
+  }
+]}
