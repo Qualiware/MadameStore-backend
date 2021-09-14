@@ -120,7 +120,7 @@ public class UsuarioService {
 	private void validarCamposObrigatorios(final Usuario usuario) {
 		boolean invalido = Boolean.FALSE;
 
-		if (Util.isEmpty(usuario.getLogin())) {
+		if (Util.isEmpty(usuario.getEmail())) {
 			invalido = Boolean.TRUE;
 		}
 
@@ -133,9 +133,9 @@ public class UsuarioService {
 	}
 
     /**
-     * Retorna a instância do {@link Usuario} conforme o 'login' informado.
+     * Retorna a instância do {@link Usuario} conforme o 'email' informado.
      * 
-     * @param login
+     * @param email
      * @return
      */
 	public Usuario getByEmail(String email) {

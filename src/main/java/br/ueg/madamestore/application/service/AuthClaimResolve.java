@@ -46,14 +46,6 @@ public class AuthClaimResolve {
 	}
 
 	/**
-	 * @return Retorna o login do usuário conforme o mapa de claims informado.
-	 */
-	public String getLogin() {
-		Claim claim = claims.get(Constante.PARAM_LOGIN);
-		return claim != null && !claim.isNull() ? claim.asString() : null;
-	}
-
-	/**
 	 * @return Retorna o email do usuário conforme o mapa de claims informado.
 	 */
 	public String getEmail() {
