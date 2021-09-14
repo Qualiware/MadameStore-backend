@@ -80,7 +80,11 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Modulo moduloAmigo = createModuloAmigo();
 
-        Grupo grupo = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloGrupo,moduloTipoAmigo, moduloAmigo));
+        Modulo moduloProduto= createModuloProduto();
+
+        Modulo moduloTipoProduto = createModuloTipoProduto();
+
+        Grupo grupo = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloGrupo,moduloTipoAmigo, moduloAmigo, moduloProduto, moduloTipoProduto));
 
         createUsuarioAdmin(grupo);
 
@@ -272,6 +276,72 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloUsuario.setFuncionalidades(funcionaldiades);
         moduloUsuario = moduloRepository.save(moduloUsuario);
         return moduloUsuario;
+    }
+
+    private Modulo createModuloProduto() {
+        Modulo moduloProduto = new Modulo();
+
+        moduloProduto.setMnemonico("PRODUTO");
+        moduloProduto.setNome("Manter Produto ");
+        moduloProduto.setStatus(StatusAtivoInativo.ATIVO);
+        moduloProduto = moduloRepository.save(moduloProduto);
+
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+                .filter(
+                        funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
+                ).collect(Collectors.toSet());
+
+        Funcionalidade fManter = new Funcionalidade();
+        fManter.setMnemonico("REMOVER");
+        fManter.setNome("Remover");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+        Funcionalidade fProduto = new Funcionalidade();
+        fProduto.setMnemonico("STATUS");
+        fProduto.setNome("É Amigo");
+        fProduto.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fProduto);
+
+
+        for(Funcionalidade funcionalidade: funcionalidades){
+            funcionalidade.setModulo(moduloProduto);
+        }
+
+        moduloProduto.setFuncionalidades(funcionalidades);
+        moduloProduto = moduloRepository.save(moduloProduto);
+
+        return moduloProduto;
+    }
+
+    private Modulo createModuloTipoProduto() {
+        Modulo moduloTipoProduto = new Modulo();
+
+        moduloTipoProduto.setMnemonico("TIPOPRODUTO");
+        moduloTipoProduto.setNome("Manter Tipo Produto ");
+        moduloTipoProduto.setStatus(StatusAtivoInativo.ATIVO);
+        moduloTipoProduto = moduloRepository.save(moduloTipoProduto);
+
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+                .filter(
+                        funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
+                ).collect(Collectors.toSet());
+
+        Funcionalidade fManter = new Funcionalidade();
+        fManter.setMnemonico("REMOVER");
+        fManter.setNome("Remover");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+
+        for(Funcionalidade funcionalidade: funcionalidades){
+            funcionalidade.setModulo(moduloTipoProduto);
+        }
+
+        moduloTipoProduto.setFuncionalidades(funcionalidades);
+        moduloTipoProduto = moduloRepository.save(moduloTipoProduto);
+
+        return moduloTipoProduto;
     }
 
     /**

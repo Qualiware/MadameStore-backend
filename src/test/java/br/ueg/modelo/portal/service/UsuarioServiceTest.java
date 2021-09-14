@@ -163,12 +163,12 @@ public class UsuarioServiceTest {
 	 * Teste do método que retorna a instância do {@link Usuario} conforme o 'login' informado.
 	 */
 	@Test
-	public void getByLogin() {
-		String login = "user.name";
+	public void getByEmail() {
+		String email = "user.email";
 		Usuario usuario = getUsuarioNovoMock();
 
-		when(usuarioRepository.findByLogin(login)).thenReturn(usuario);
-		Usuario retorno = usuarioService.getByLogin(login);
+		when(usuarioRepository.findByEmail(email)).thenReturn(usuario);
+		Usuario retorno = usuarioService.getByEmail(email);
 		assertEquals(usuario, retorno);
 	}
 
@@ -555,7 +555,6 @@ public class UsuarioServiceTest {
 		Usuario usuario = new Usuario();
 		usuario.setId(1L);
 		usuario.setNome("Nome do Usuário");
-		usuario.setLogin("user.name");
 		usuario.setCpf("12345678901");
 
 		UsuarioGrupo usuarioGrupo = new UsuarioGrupo();
