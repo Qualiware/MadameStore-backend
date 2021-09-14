@@ -138,8 +138,8 @@ public class UsuarioService {
      * @param login
      * @return
      */
-	public Usuario getByLogin(String login) {
-		return usuarioRepository.findByLogin(login);
+	public Usuario getByEmail(String email) {
+		return usuarioRepository.findByEmail(email);
 	}
 
     /**

@@ -31,11 +31,8 @@ public @Data class CredencialDTO implements Serializable {
 	@ApiModelProperty(value = "Id do Usuário")
 	private Long id;
 
-	@ApiModelProperty(value = "Nome do Usuário")
+	@ApiModelProperty(value = "Nome completo do Usuário")
 	private String nome;
-
-	@ApiModelProperty(value = "Login do Usuário")
-	private String login;
 
 	@ApiModelProperty(value = "Email do Usário")
 	private String email;

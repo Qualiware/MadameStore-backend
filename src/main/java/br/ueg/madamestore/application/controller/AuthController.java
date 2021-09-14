@@ -50,7 +50,7 @@ public class AuthController extends AbstractController {
 	 * @param authTO
 	 * @return
 	 */
-	@ApiOperation(value = "Concede o token de acesso ao Usuário através do 'login' e 'senha'.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiOperation(value = "Concede o token de acesso ao Usuário através do 'email' e 'senha'.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiResponses({ 
 			@ApiResponse(code = 200, message = "Success", response = CredencialDTO.class),
 			@ApiResponse(code = 403, message = "Proibido", response = MessageResponse.class), 

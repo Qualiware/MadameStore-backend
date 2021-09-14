@@ -75,7 +75,7 @@ public class AuthService {
 	}
 
 	public static Boolean loginByPassword(Usuario usuario, AuthDTO authDTO){
-		if(!authDTO.getLogin().equals(usuario.getLogin())){
+		if(!authDTO.getEmail().equals(usuario.getEmail())){
 			return false;
 		}
 		// Tratamento de senha sem enconde (senha com menos de 21 caracteres
@@ -103,9 +103,9 @@ public class AuthService {
 		CredencialDTO credencialDTO = null;
 
 		try {
-			validarCamposObrigatoriosLoginAcesso(authDTO);
+			validarCamposObrigatoriosLoginAcesso(authDTO); //*
 
-			Usuario usuario = usuarioService.getByLogin(authDTO.getLogin());
+			Usuario usuario = usuarioService.getByEmail(authDTO.getEmail());
 			validarUsuarioLogin(usuario);
 
 			if (!loginByPassword(usuario, authDTO)) {
@@ -119,7 +119,6 @@ public class AuthService {
 
 			TokenBuilder builder = new TokenBuilder(keyToken);
 			builder.addNome(usuario.getNome());
-			builder.addLogin(usuario.getLogin());
 			builder.addParam(Constante.PARAM_EMAIL, usuario.getEmail());
 			builder.addParam(Constante.PARAM_ID_USUARIO, usuario.getId());
 			builder.addParam(Constante.PARAM_EXPIRES_IN, tokenExpireIn);
@@ -158,7 +157,6 @@ public class AuthService {
 	private CredencialDTO createCredencialDTO(Usuario usuario) {
 		CredencialDTO credencialDTO;
 		credencialDTO = new CredencialDTO();
-		credencialDTO.setLogin(usuario.getLogin());
 		credencialDTO.setEmail(usuario.getEmail());
 		credencialDTO.setNome(usuario.getNome());
 		credencialDTO.setId(usuario.getId());
@@ -212,7 +210,7 @@ public class AuthService {
 	private void registerCredentialInSecurityContext(CredencialDTO credencialDTO) {
 		//Cria instancia da autenticação para ter informações para a auditoria
 		CredentialImpl credential = CredentialImpl.newInstance(credencialDTO, credencialDTO.getAccessToken());
-		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(credential.getUsername(), credential);
+		UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(credential.getEmail(), credential);
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
@@ -241,13 +239,11 @@ public class AuthService {
 
 		credencialDTO.setNome(resolve.getNome());
 		credencialDTO.setEmail(resolve.getEmail());
-		credencialDTO.setLogin(resolve.getLogin());
 		credencialDTO.setId(resolve.getIdUsuario());
 
 		if (resolve.getIdUsuario() != null) {
 			builder.addNome(resolve.getNome());
-			builder.addLogin(resolve.getLogin());
-			builder.addParam(Constante.PARAM_EMAIL, resolve.getEmail());
+			builder.addEmail(resolve.getEmail());
 			builder.addParam(Constante.PARAM_ID_USUARIO, resolve.getIdUsuario());
 		}
 
@@ -287,7 +283,6 @@ public class AuthService {
 		roles = grupoService.getRolesByUsuario(resolve.getIdUsuario());
 
 		credencialDTO.setId(resolve.getIdUsuario());
-		credencialDTO.setLogin(resolve.getLogin());
 		credencialDTO.setEmail(resolve.getEmail());
 		credencialDTO.setNome(resolve.getNome());
 		credencialDTO.setRoles(roles);
@@ -309,7 +304,7 @@ public class AuthService {
 		Usuario usuario = usuarioService.redefinirSenha(usuarioSenhaDTO);
 
 		AuthDTO authDTO = new AuthDTO();
-		authDTO.setLogin(usuario.getLogin());
+		authDTO.setEmail(usuario.getEmail());
 		authDTO.setSenha(usuarioSenhaDTO.getNovaSenha());
 		return loginAccess(authDTO);
 	}
@@ -337,7 +332,7 @@ public class AuthService {
 	 * @param authDTO -
 	 */
 	private void validarCamposObrigatoriosLoginAcesso(final AuthDTO authDTO) {
-		if (Util.isEmpty(authDTO.getLogin()) || Util.isEmpty(authDTO.getSenha())) {
+		if (Util.isEmpty(authDTO.getEmail()) || Util.isEmpty(authDTO.getSenha())) {
 			throw new BusinessException(SistemaMessageCode.ERRO_CAMPOS_OBRIGATORIOS);
 		}
 	}

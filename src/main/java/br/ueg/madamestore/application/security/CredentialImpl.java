@@ -65,8 +65,8 @@ public class CredentialImpl implements Credential {
 	 * @see Credential#getUsername()
 	 */
 	@Override
-	public String getUsername() {
-		return credencialDTO != null ? credencialDTO.getLogin() : null;
+	public String getName() {
+		return credencialDTO != null ? credencialDTO.getNome() : null;
 	}
 
 	/**
@@ -75,13 +75,6 @@ public class CredentialImpl implements Credential {
 	@Override
 	public List<String> getRoles() {
 		return credencialDTO != null ? credencialDTO.getRoles() : null;
-	}
-
-	/**
-	 * @return the login
-	 */
-	public String getNome() {
-		return credencialDTO != null ? credencialDTO.getNome() : null;
 	}
 
 	/**

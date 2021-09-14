@@ -23,7 +23,14 @@ public interface Credential {
 	 * 
 	 * @return -
 	 */
-	public String getUsername();
+	public String getName();
+
+	/**
+	 * Returns the e-mail logged in.
+	 * 
+	 * @return -
+	 */
+	public String getEmail();
 
 	/**
 	 * Returns the roles logged in.
