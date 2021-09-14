@@ -36,8 +36,8 @@ public @Data class AuthDTO implements Serializable {
 	@ApiModelProperty(value = "Id do Usuáro", required = true)
 	private String idUsuario;// TODO Verificar se não é mais necessário.
 
-	@ApiModelProperty(value = "Login do Usuário", required = true)
-	private String login;
+	@ApiModelProperty(value = "Email do Usuário", required = true)
+	private String email;
 
 	@ApiModelProperty(value = "Senha do Usuário", required = true)
 	private String senha;

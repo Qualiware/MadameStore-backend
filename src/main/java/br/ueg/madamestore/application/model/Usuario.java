@@ -49,10 +49,6 @@ public @Data class Usuario implements Serializable{
 	@Column(name = "EMAIL", length = 75, nullable = false)
 	private String email;
 
-	// https://docs.microsoft.com/pt-br/windows/win32/adschema/a-samaccountname?redirectedfrom=MSDN
-	@Column(name = "LOGIN_USUARIO", length = 20, nullable = false)
-	private String login;
-
 	@Column(name = "SENHA_USUARIO", length = 255, nullable = false)
 	private String senha;
 

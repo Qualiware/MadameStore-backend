@@ -79,7 +79,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			authentication = new UsernamePasswordAuthenticationToken(null, null);
 		} else {
 			List<GrantedAuthority> grantedAuthorities = getGrantedAuthorities(credential);
-			authentication = new UsernamePasswordAuthenticationToken(credential.getUsername(), credential,
+			authentication = new UsernamePasswordAuthenticationToken(credential.getEmail(), credential,
 					grantedAuthorities);
 		}
 		return authentication;

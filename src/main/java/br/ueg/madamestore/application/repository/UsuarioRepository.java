@@ -27,12 +27,12 @@ public interface UsuarioRepository extends UsuarioRepositoryCustom, JpaRepositor
 	// TODO Garantir que somente usuários com ID_ORIGEM_CADASTRO = PORTALSSO
 
 	/**
-	 * Retorna a instância do {@link Usuario} conforme o 'login' informado.
+	 * Retorna a instância do {@link Usuario} conforme o 'email' informado.
 	 * 
-	 * @param login
+	 * @param email
 	 * @return
 	 */
-	public Usuario findByLogin(final String login);
+	public Usuario findByEmail(final String email);
 
 	/**
 	 * Retorna a instância do {@link Usuario} conforme o 'cpf' informado.

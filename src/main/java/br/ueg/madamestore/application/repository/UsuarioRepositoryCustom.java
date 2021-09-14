@@ -22,12 +22,12 @@ import br.ueg.madamestore.application.model.Usuario;
 public interface UsuarioRepositoryCustom {
 
 	/**
-	 * Retorna a Lista de {@link UsuarioDTO} conforme o login pesquisado.
+	 * Retorna a Lista de {@link UsuarioDTO} conforme o email pesquisado.
 	 * 
-	 * @param login -
+	 * @param email -
 	 * @return -
 	 */
-	public List<UsuarioDTO> findAllByLoginIgnoreCaseContaining(final String login);
+	public List<UsuarioDTO> findAllByEmailIgnoreCaseContaining(final String email);
 
 	/**
 	 * Retorna a Lista de {@link UsuarioDTO} conforme o filtro pesquisado.

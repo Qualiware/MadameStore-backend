@@ -40,14 +40,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 	 * @see UsuarioRepositoryCustom#findAllByLoginIgnoreCaseContaining(String)
 	 */
 	@Override
-	public List<UsuarioDTO> findAllByLoginIgnoreCaseContaining(final String login) {
+	public List<UsuarioDTO> findAllByEmailIgnoreCaseContaining(final String email) {
 		StringBuilder jpql = new StringBuilder();
-		jpql.append(" SELECT new UsuarioDTO(usuario.id , usuario.login)");
+		jpql.append(" SELECT new UsuarioDTO(usuario.id , usuario.email)");
 		jpql.append(" FROM Usuario usuario");
-		jpql.append(" WHERE usuario.login LIKE ('%' + :login + '%')");
+		jpql.append(" WHERE usuario.email LIKE ('%' + :email + '%')");
 
 		TypedQuery<UsuarioDTO> query = entityManager.createQuery(jpql.toString(), UsuarioDTO.class);
-		query.setParameter("login", login);
+		query.setParameter("email", email);
 		return query.getResultList();
 	}
 	

@@ -26,7 +26,6 @@ public final class Constante {
 	public static final String PARAM_TYPE = "type";
 	public static final String PARAM_NAME = "nome";
 	public static final String PARAM_EMAIL = "email";
-	public static final String PARAM_LOGIN = "login";
 	public static final String PARAM_ROLES = "roles";
 	public static final String PARAM_LINK = "link";
 	public static final String PARAM_DISABLED = "disabled";

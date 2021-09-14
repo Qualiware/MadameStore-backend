@@ -54,10 +54,6 @@ public @Data class UsuarioDTO implements Serializable {
 	@ApiModelProperty(value = "Email do usuário")
 	private String email;
 
-	@Size(max = 20)
-	@ApiModelProperty(value = "Login do Usuário")
-	private String login;
-
 	@Size(max = 65)
 	@ApiModelProperty(value = "Nome do Usuário")
 	private String nome;
@@ -65,10 +61,6 @@ public @Data class UsuarioDTO implements Serializable {
 	@Size(max = 14)
 	@ApiModelProperty(value = "Cpf do Usuário")
 	private String cpf;
-
-	@JsonFormat(shape = Shape.STRING)
-	@ApiModelProperty(value = "Data de nascimento Usuário")
-	private LocalDate dataNascimento;
 
 	@ApiModelProperty(value = "Código do Status do Usuário")
 	private boolean status;
@@ -103,9 +95,9 @@ public @Data class UsuarioDTO implements Serializable {
 	@ApiModelProperty(hidden = true)
 	private Long idUsuarioLogado;
 
-	public UsuarioDTO(String id, String login) {
+	public UsuarioDTO(String id, String email) {
 		this.id = id;
-		this.login = login;
+		this.email = email;
 	}
 
 	/**

@@ -115,13 +115,13 @@ public class TokenBuilder {
 	}
 
 	/**
-	 * Adiciona o 'Login' do Usuário aos parâmetros.
+	 * Adiciona o 'E-mail' do Usuário aos parâmetros.
 	 * 
-	 * @param login -
+	 * @param email -
 	 * @return -
 	 */
-	public TokenBuilder addLogin(final String login) {
-		builder.withClaim(Constante.PARAM_LOGIN, login);
+	public TokenBuilder addEmail(final String email) {
+		builder.withClaim(Constante.PARAM_EMAIL, email);
 		return this;
 	}
 
