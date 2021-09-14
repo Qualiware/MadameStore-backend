@@ -8,17 +8,6 @@
  */
 package br.ueg.modelo.portal.service;
 
-import br.ueg.modelo.application.service.EmailEngineService;
-import br.ueg.modelo.application.service.UsuarioService;
-import br.ueg.modelo.comum.exception.BusinessException;
-import br.ueg.modelo.application.dto.FiltroUsuarioDTO;
-import br.ueg.modelo.application.dto.UsuarioDTO;
-import br.ueg.modelo.application.dto.UsuarioSenhaDTO;
-import br.ueg.modelo.application.enums.StatusAtivoInativo;
-import br.ueg.modelo.application.model.TelefoneUsuario;
-import br.ueg.modelo.application.model.Usuario;
-import br.ueg.modelo.application.model.UsuarioGrupo;
-import br.ueg.modelo.application.repository.UsuarioRepository;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,6 +16,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import br.ueg.madamestore.application.dto.FiltroUsuarioDTO;
+import br.ueg.madamestore.application.dto.UsuarioDTO;
+import br.ueg.madamestore.application.dto.UsuarioSenhaDTO;
+import br.ueg.madamestore.application.enums.StatusAtivoInativo;
+import br.ueg.madamestore.application.model.TelefoneUsuario;
+import br.ueg.madamestore.application.model.Usuario;
+import br.ueg.madamestore.application.model.UsuarioGrupo;
+import br.ueg.madamestore.application.repository.UsuarioRepository;
+import br.ueg.madamestore.application.service.EmailEngineService;
+import br.ueg.madamestore.application.service.UsuarioService;
+import br.ueg.madamestore.comum.exception.BusinessException;
 
 import java.time.LocalDate;
 import java.util.*;
