@@ -25,6 +25,9 @@ class ProdutoDTO implements Serializable {
     @ApiModelProperty(value = "Id do Tipo de Produto")
     private Long idTipoProduto;
 
+    @ApiModelProperty(value = "Id da Venda")
+    private Long idVenda;
+
     @ApiModelProperty(value = "nome do Tipo de Produto")
     private String nomeTipoProduto;
 

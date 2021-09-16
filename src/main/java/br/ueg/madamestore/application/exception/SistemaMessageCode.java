@@ -39,6 +39,7 @@ public enum SistemaMessageCode implements MessageCode {
 	ERRO_LOGIN_DUPLICADO("MSG-026", 400),
 	ERRO_CPF_JA_INFORMADO("MSG-027", 400),
 
+
 	ERRO_DOCUMENTO_JA_INFORMADO("MSG-029", 400),
 	MSG_INATIVAR_ITEM("MSG-033", 400),
 	MSG_ATIVAR_ITEM("MSG-034", 400),
@@ -67,6 +68,7 @@ public enum SistemaMessageCode implements MessageCode {
 	ERRO_TIPO_AMIGO_DUPLICADO("MSG-045",400),
 
 	ERRO_AMIGO_DUPLICADO("MSG-046", 400),
+	ERRO_QUANTIDADE_DE_PRODUTOS_INSUFICIENTE("MSG-050", 400)
             ;
 
 	private final String code;
