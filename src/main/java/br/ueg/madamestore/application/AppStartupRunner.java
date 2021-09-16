@@ -84,7 +84,9 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Modulo moduloTipoProduto = createModuloTipoProduto();
 
-        Grupo grupo = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloGrupo,moduloTipoAmigo, moduloAmigo, moduloProduto, moduloTipoProduto));
+        Modulo moduloVenda= createModuloVenda();
+
+        Grupo grupo = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloGrupo,moduloTipoAmigo, moduloAmigo, moduloProduto, moduloTipoProduto, moduloVenda));
 
         createUsuarioAdmin(grupo);
 
@@ -312,6 +314,43 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloProduto = moduloRepository.save(moduloProduto);
 
         return moduloProduto;
+    }
+
+
+    private Modulo createModuloVenda() {
+        Modulo moduloVenda = new Modulo();
+
+        moduloVenda.setMnemonico("VENDA");
+        moduloVenda.setNome("Manter Produto ");
+        moduloVenda.setStatus(StatusAtivoInativo.ATIVO);
+        moduloVenda = moduloRepository.save(moduloVenda);
+
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+                .filter(
+                        funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
+                ).collect(Collectors.toSet());
+
+        Funcionalidade fManter = new Funcionalidade();
+        fManter.setMnemonico("REMOVER");
+        fManter.setNome("Remover");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+        Funcionalidade fVenda = new Funcionalidade();
+        fVenda.setMnemonico("STATUS");
+        fVenda.setNome("É Amigo");
+        fVenda.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fVenda);
+
+
+        for(Funcionalidade funcionalidade: funcionalidades){
+            funcionalidade.setModulo(moduloVenda);
+        }
+
+        moduloVenda.setFuncionalidades(funcionalidades);
+        moduloVenda = moduloRepository.save(moduloVenda);
+
+        return moduloVenda;
     }
 
     private Modulo createModuloTipoProduto() {

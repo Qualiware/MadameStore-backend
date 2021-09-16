@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ApiModel(value = "Dados do filtro de pesquisa de Amigo")
+@ApiModel(value = "Dados do filtro de pesquisa do Prouto")
 public @Data class FiltroProdutoDTO implements Serializable {
     @ApiModelProperty(value = "Nome do Produto")
     private String nome;

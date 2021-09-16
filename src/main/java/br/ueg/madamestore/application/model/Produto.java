@@ -30,6 +30,10 @@ class Produto {
     @JoinColumn(name = "ID_TIPO_PRODUTO", referencedColumnName = "ID_TIPO_PRODUTO", nullable = false)
     private TipoProduto tipo;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_VENDA", referencedColumnName = "ID_VENDA")
+    private Venda venda;
+
     @Column(name="PECO_PRODUTO", nullable = false)
     private Double preco;
 
