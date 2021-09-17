@@ -77,8 +77,10 @@ public class AppStartupRunner implements ApplicationRunner {
         Modulo moduloGrupo = createModuloCrud("GRUPO", "Manter Grupo");
 
         Modulo moduloProduto = createModuloCrud("PRODUTO", "Manter Produto");
+        Modulo moduloProdutoFuncionaro = createModuloFuncionario("PRODUTO", "Gerenciar Produto");
 
         Modulo moduloTipoProduto = createModuloTipoProduto();
+        Modulo moduloTipoProdutoFuncionario = createModuloFuncionario("TIPOPRODUTO", "Gerenciar Tipo Produto");
 
         //Modulo moduloVenda = createModuloVenda();
 
@@ -86,7 +88,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto));
 
-        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList());
+        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro));
 
         createUsuarioAdmin(grupoAdmin);
     }
@@ -329,7 +331,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloUsuario = moduloRepository.save(moduloUsuario);
 
         final Modulo lModuloUsuario = moduloUsuario;
-        Set<Funcionalidade> funcionaldiades = getFuncionalidadesAdminGerente();
+        Set<Funcionalidade> funcionaldiades = getFuncionalidadesFuncionario();
 
         for(Funcionalidade funcionalidade: funcionaldiades){
             funcionalidade.setModulo(moduloUsuario);
