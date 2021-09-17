@@ -311,12 +311,26 @@ public class AppStartupRunner implements ApplicationRunner {
         final Modulo lModuloUsuario = moduloUsuario;
         Set<Funcionalidade> funcionaldiades = getFuncionalidadesAdminGerente();
 
-/*        funcionaldiades.stream().map(
-                funcionalidade -> {
-                    funcionalidade.setModulo(lModuloUsuario);
-                    return funcionalidade;
-                }).collect(Collectors.toSet());
-        // equivalente com for*/
+        for(Funcionalidade funcionalidade: funcionaldiades){
+            funcionalidade.setModulo(moduloUsuario);
+        }
+
+        moduloUsuario.setFuncionalidades(funcionaldiades);
+        moduloUsuario = moduloRepository.save(moduloUsuario);
+        return moduloUsuario;
+    }
+
+    private Modulo createModuloFuncionario(String moduloMNemonico, String moduloNome) {
+        Modulo moduloUsuario = new Modulo();
+
+        moduloUsuario.setMnemonico(moduloMNemonico);
+        moduloUsuario.setNome(moduloNome);
+        moduloUsuario.setStatus(StatusAtivoInativo.ATIVO);
+        moduloUsuario = moduloRepository.save(moduloUsuario);
+
+        final Modulo lModuloUsuario = moduloUsuario;
+        Set<Funcionalidade> funcionaldiades = getFuncionalidadesAdminGerente();
+
         for(Funcionalidade funcionalidade: funcionaldiades){
             funcionalidade.setModulo(moduloUsuario);
         }

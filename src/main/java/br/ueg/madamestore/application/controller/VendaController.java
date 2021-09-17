@@ -167,7 +167,7 @@ public class VendaController extends AbstractController {
 		List<Venda> vendas = vendaService.getVendaByFiltro(filtroDTO);
 		List<VendaDTO> vendasDTO = new ArrayList<>();
 		for (Venda venda: vendas) {
-			venda.setProduto(null);
+			venda.setItemVenda(null);
 			vendasDTO.add (vendaMapper.toDTO(venda));
 		}
 

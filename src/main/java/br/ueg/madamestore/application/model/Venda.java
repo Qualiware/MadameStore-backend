@@ -19,6 +19,11 @@ class Venda {
     @Column(name = "ID_VENDA", nullable = false)
     private Long id;
 
+
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ItemVenda> itemVenda;
+
     @Column(name="VALORTOTAL", nullable = false)
     private Double valorTotal;
 
@@ -28,11 +33,5 @@ class Venda {
     @Column(name="QUANTIDADE", nullable = false)
     private Integer quantidade;
 
-    //@Column(name = "DATA_ATUALIZADO")
-    //private LocalDate dataAtualizada;
-
-   /* @Convert(converter = StatusSimNaoConverter.class)
-    @Column(name = "E_AMIGO", length = 1, nullable = false)
-    private StatusSimNao amigo;*/
 
 }
