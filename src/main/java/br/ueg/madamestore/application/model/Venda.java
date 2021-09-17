@@ -6,7 +6,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,12 +18,6 @@ class Venda {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TBL_S_VENDA")
     @Column(name = "ID_VENDA", nullable = false)
     private Long id;
-
-
-    @EqualsAndHashCode.Exclude
-    @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Produto> produtos;
-
 
     @Column(name="VALORTOTAL", nullable = false)
     private Double valorTotal;

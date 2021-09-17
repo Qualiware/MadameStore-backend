@@ -76,22 +76,19 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Modulo moduloGrupo = createModuloCrud("GRUPO", "Manter Grupo");
 
-        Modulo moduloTipoAmigo = createModuloTipoAmigo();
-
-        Modulo moduloAmigo = createModuloAmigo();
-
-        Modulo moduloProduto= createModuloProduto();
+        Modulo moduloProduto = createModuloCrud("PRODUTO", "Manter Produto");
 
         Modulo moduloTipoProduto = createModuloTipoProduto();
 
-        Modulo moduloVenda= createModuloVenda();
+        //Modulo moduloVenda = createModuloVenda();
 
-        Grupo grupo = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloGrupo,moduloTipoAmigo, moduloAmigo, moduloProduto, moduloTipoProduto, moduloVenda));
+        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto));
 
-        createUsuarioAdmin(grupo);
+        Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto));
 
-        createTipoAmigos();
-        createAmigos();
+        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList());
+
+        createUsuarioAdmin(grupoAdmin);
     }
 
     /**
@@ -151,7 +148,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloTipoAmigo.setStatus(StatusAtivoInativo.ATIVO);
         moduloTipoAmigo = moduloRepository.save(moduloTipoAmigo);
 
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
                 .filter(
                         funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
                 ).collect(Collectors.toSet());
@@ -185,7 +182,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloAmigo.setStatus(StatusAtivoInativo.ATIVO);
         moduloAmigo = moduloRepository.save(moduloAmigo);
 
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
                 .filter(
                         funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
                 ).collect(Collectors.toSet());
@@ -254,6 +251,55 @@ public class AppStartupRunner implements ApplicationRunner {
         return grupo;
     }
 
+    private Grupo createCrupoGerente(List<Modulo> modulos) {
+        
+        Grupo grupo = new Grupo();
+        grupo.setNome("Gerentes");
+        grupo.setAdministrador(StatusSimNao.SIM);
+        grupo.setDescricao("Grupo de gerentes");
+        grupo.setStatus(StatusAtivoInativo.ATIVO);
+        grupo = grupoRepository.save(grupo);
+        final Grupo lGrupo = grupo;
+        
+        grupo.setGrupoFuncionalidades(new HashSet<>());
+
+        modulos.forEach(modulo -> {
+            lGrupo.getGrupoFuncionalidades().addAll(
+                modulo.getFuncionalidades().stream().map(
+                    funcionalidade -> new GrupoFuncionalidade(null, lGrupo, funcionalidade)
+                ).collect(Collectors.toSet())
+            );
+        });
+
+        
+        grupoRepository.save(grupo);
+        return grupo; 
+    }
+
+    private Grupo createCrupoFuncionario(List<Modulo> modulos) {
+        Grupo grupo = new Grupo();
+        grupo.setNome("Funcionários");
+        grupo.setAdministrador(StatusSimNao.SIM);
+        grupo.setDescricao("Grupo de funcionários");
+        grupo.setStatus(StatusAtivoInativo.ATIVO);
+        grupo = grupoRepository.save(grupo);
+        final Grupo lGrupo = grupo;
+        
+        grupo.setGrupoFuncionalidades(new HashSet<>());
+
+        modulos.forEach(modulo -> {
+            lGrupo.getGrupoFuncionalidades().addAll(
+                modulo.getFuncionalidades().stream().map(
+                    funcionalidade -> new GrupoFuncionalidade(null, lGrupo, funcionalidade)
+                ).collect(Collectors.toSet())
+            );
+        });
+
+        
+        grupoRepository.save(grupo);
+        return grupo;
+    }
+
     private Modulo createModuloCrud(String moduloMNemonico, String moduloNome) {
         Modulo moduloUsuario = new Modulo();
 
@@ -263,7 +309,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloUsuario = moduloRepository.save(moduloUsuario);
 
         final Modulo lModuloUsuario = moduloUsuario;
-        Set<Funcionalidade> funcionaldiades = getFuncionalidadesCrud();
+        Set<Funcionalidade> funcionaldiades = getFuncionalidadesAdminGerente();
 
 /*        funcionaldiades.stream().map(
                 funcionalidade -> {
@@ -284,20 +330,16 @@ public class AppStartupRunner implements ApplicationRunner {
         Modulo moduloProduto = new Modulo();
 
         moduloProduto.setMnemonico("PRODUTO");
-        moduloProduto.setNome("Manter Produto ");
+        moduloProduto.setNome("Manter Produto");
         moduloProduto.setStatus(StatusAtivoInativo.ATIVO);
         moduloProduto = moduloRepository.save(moduloProduto);
 
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
                 .filter(
                         funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
                 ).collect(Collectors.toSet());
 
-        Funcionalidade fManter = new Funcionalidade();
-        fManter.setMnemonico("REMOVER");
-        fManter.setNome("Remover");
-        fManter.setStatus(StatusAtivoInativo.ATIVO);
-        funcionalidades.add(fManter);
+        
 
         Funcionalidade fProduto = new Funcionalidade();
         fProduto.setMnemonico("STATUS");
@@ -316,7 +358,6 @@ public class AppStartupRunner implements ApplicationRunner {
         return moduloProduto;
     }
 
-
     private Modulo createModuloVenda() {
         Modulo moduloVenda = new Modulo();
 
@@ -325,7 +366,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloVenda.setStatus(StatusAtivoInativo.ATIVO);
         moduloVenda = moduloRepository.save(moduloVenda);
 
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
                 .filter(
                         funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
                 ).collect(Collectors.toSet());
@@ -361,7 +402,7 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloTipoProduto.setStatus(StatusAtivoInativo.ATIVO);
         moduloTipoProduto = moduloRepository.save(moduloTipoProduto);
 
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesCrud().stream()
+        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
                 .filter(
                         funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
                 ).collect(Collectors.toSet());
@@ -387,7 +428,7 @@ public class AppStartupRunner implements ApplicationRunner {
      * retorna Funcionalidades padrão de um CRRUD
      * @return
      */
-    private Set<Funcionalidade> getFuncionalidadesCrud() {
+    private Set<Funcionalidade> getFuncionalidadesAdminGerente() {
         Set<Funcionalidade> funcionalidades = new HashSet<>();
 
         Funcionalidade fManter = new Funcionalidade();
@@ -419,6 +460,37 @@ public class AppStartupRunner implements ApplicationRunner {
         fManter.setNome("Visualizar");
         fManter.setStatus(StatusAtivoInativo.ATIVO);
         funcionalidades.add(fManter);
+
+        fManter = new Funcionalidade();
+        fManter.setMnemonico("REMOVER");
+        fManter.setNome("Remover");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+        return funcionalidades;
+    }
+
+    private Set<Funcionalidade> getFuncionalidadesFuncionario() {
+        Set<Funcionalidade> funcionalidades = new HashSet<>();
+
+        Funcionalidade fManter = new Funcionalidade();
+        fManter.setMnemonico("INCLUIR");
+        fManter.setNome("Incluir");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+        fManter = new Funcionalidade();
+        fManter.setMnemonico("PESQUISAR");
+        fManter.setNome("Pesquisar");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
+        fManter = new Funcionalidade();
+        fManter.setMnemonico("VISUALIZAR");
+        fManter.setNome("Visualizar");
+        fManter.setStatus(StatusAtivoInativo.ATIVO);
+        funcionalidades.add(fManter);
+
         return funcionalidades;
     }
 }
