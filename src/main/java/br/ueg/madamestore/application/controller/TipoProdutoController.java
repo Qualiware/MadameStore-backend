@@ -36,7 +36,7 @@ public class TipoProdutoController extends AbstractController {
     @Autowired
     private TipoProdutoService tipoProdutoService;
 
-    @PreAuthorize("hasRole('ROLE_TIPOAMIGO_INCLUIR')")
+    @PreAuthorize("hasRole('ROLE_TIPOPRODUTO_INCLUIR')")
     @PostMapping
     @ApiOperation(value = "Inclusão/alteração de tipo produto.",
             notes = "Incluir/Alterar Tipo Produto.")
@@ -58,7 +58,7 @@ public class TipoProdutoController extends AbstractController {
      * @param tipoProdutoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_TIPOAMIGO_ALTERAR')")
+    @PreAuthorize("hasRole('ROLE_TIPOPRODUTO_ALTERAR')")
     @ApiOperation(value = "Altera as informações de Tipo Produto.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = TipoProdutoDTO.class),
@@ -81,7 +81,7 @@ public class TipoProdutoController extends AbstractController {
      * @param id
      * s@return
      */
-    @PreAuthorize("hasRole('ROLE_TIPOAMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_TIPOPRODUTO_PESQUISAR')")
     @ApiOperation(value = "Retorna as informações do TipoProduto pelo id informado.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = TipoProdutoDTO.class),
@@ -102,7 +102,7 @@ public class TipoProdutoController extends AbstractController {
      * @param filtroTipoProdutoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_TIPOAMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_TIPOPRODUTO_PESQUISAR')")
     @ApiOperation(value = "Pesquisa de TipoProduto.",
             notes = "Recupera as informações de TipoProduto conforme dados informados no filtro de busca", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
@@ -153,7 +153,7 @@ public class TipoProdutoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_TIPOAMIGO_REMOVER')")
+    @PreAuthorize("hasRole('ROLE_TIPOPRODUTO_REMOVER')")
     @ApiOperation(value = "Remove um TipoProduto pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = TipoProdutoDTO.class),

@@ -35,7 +35,7 @@ public class ProdutoController extends AbstractController {
     @Autowired
     private ProdutoService produtoService;
 
-    @PreAuthorize("hasRole('ROLE_AMIGO_INCLUIR')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_INCLUIR')")
     @PostMapping
     @ApiOperation(value = "Inclusão de produto.",
             notes = "Incluir Produto.")
@@ -56,7 +56,7 @@ public class ProdutoController extends AbstractController {
      * @param produtoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_ALTERAR')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_ALTERAR')")
     @ApiOperation(value = "Altera as informações de Produto.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
@@ -79,7 +79,7 @@ public class ProdutoController extends AbstractController {
      * @param id
      * s@return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_PESQUISAR')")
     @ApiOperation(value = "Retorna as informações do Produto pelo id informado.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
@@ -100,7 +100,7 @@ public class ProdutoController extends AbstractController {
      * @param filtroProdutoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_PESQUISAR')")
     @ApiOperation(value = "Pesquisa de Produto.",
             notes = "Recupera as informações de Produto conforme dados informados no filtro de busca", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
@@ -128,7 +128,7 @@ public class ProdutoController extends AbstractController {
      *
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_PESQUISAR')")
     @ApiOperation(value = "Retorna uma lista de Produtos cadastrados.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
@@ -136,7 +136,7 @@ public class ProdutoController extends AbstractController {
             @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
     })
     @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> getAmigos() {
+    public ResponseEntity<?> getProdutos() {
         List<Produto> produtos = produtoService.getTodos();
         List<ProdutoDTO> produtosDTO = new ArrayList<>();
         for (Produto produto : produtos) {
@@ -152,7 +152,7 @@ public class ProdutoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_REMOVER')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_REMOVER')")
     @ApiOperation(value = "Remove um Produto pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
@@ -172,7 +172,7 @@ public class ProdutoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_STATUS')")
+    @PreAuthorize("hasRole('ROLE_PRODUTO_STATUS')")
     @ApiOperation(value = "Tonar Produto do Produto pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
@@ -194,7 +194,7 @@ public class ProdutoController extends AbstractController {
      * @param id
      * @return
      */
-   /* @PreAuthorize("hasRole('ROLE_AMIGO_STATUS')")
+   /* @PreAuthorize("hasRole('ROLE_PRODUTO_STATUS')")
     @ApiOperation(value = "Deixar de ser Produto do Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
