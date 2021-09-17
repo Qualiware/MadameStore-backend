@@ -53,7 +53,13 @@ public class VendaService {
      */
 	public Venda salvar(Venda venda) {
 		validarCamposObrigatorios(venda);
+<<<<<<< HEAD
 		//for(Produto produto: venda.getProdutos());
+=======
+		//for(Produto produto: venda.getProdutos())
+
+		venda.getProdutos()
+>>>>>>> main
 		//Produto produto= (Produto) venda.getProduto();
 		//if(venda.getProduto().getQuantidade() < venda.getQuantidade())
 		//{
@@ -70,12 +76,21 @@ public class VendaService {
 	 * Configura o {@link Venda} dentro de  {@link TelefoneUsuario} para salvar.
 	 * 
 	 * @param venda
+<<<<<<< HEAD
 */
 	public void configurarVendaProduto(Venda venda) {
 
 
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			itemVenda.setVenda(venda);
+=======
+	 */
+	public void configurarVendaProduto(Venda venda) {
+
+
+		for (Produto produto : venda.getProduto()) {
+			produto.setVenda(venda);
+>>>>>>> main
 		}
 	}
 
@@ -93,7 +108,11 @@ public class VendaService {
 			invalido = Boolean.TRUE;
 		}
 
+<<<<<<< HEAD
 		if (venda.getItemVenda() == null)
+=======
+		if (venda.getProduto() == null)
+>>>>>>> main
 			invalido = Boolean.TRUE;
 
 		if (venda.getValorTotal() == null)
