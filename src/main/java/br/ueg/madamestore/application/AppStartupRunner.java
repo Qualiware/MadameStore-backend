@@ -80,6 +80,8 @@ public class AppStartupRunner implements ApplicationRunner {
 
         Modulo moduloTipoProduto = createModuloTipoProduto();
 
+
+
         //Modulo moduloVenda = createModuloVenda();
 
         Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto));
