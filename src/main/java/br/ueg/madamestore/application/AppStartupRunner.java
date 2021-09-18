@@ -79,16 +79,17 @@ public class AppStartupRunner implements ApplicationRunner {
         Modulo moduloProduto = createModuloCrud("PRODUTO", "Manter Produto");
         Modulo moduloProdutoFuncionaro = createModuloFuncionario("PRODUTO", "Gerenciar Produto");
 
-        Modulo moduloTipoProduto = createModuloTipoProduto();
+        Modulo moduloTipoProduto = createModuloCrud("TIPOPRODUTO", "Manter Tipo Produto");
         Modulo moduloTipoProdutoFuncionario = createModuloFuncionario("TIPOPRODUTO", "Gerenciar Tipo Produto");
+        
+        Modulo moduloVenda = createModuloCrud("VENDA", "Manter Venda");
+        Modulo moduloVendaFuncionario = createModuloFuncionario("VENDA", "Gerenciar Venda");
 
-        //Modulo moduloVenda = createModuloVenda();
+        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto, moduloVenda));
 
-        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto));
+        Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto, moduloVenda));
 
-        Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto));
-
-        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro));
+        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro, moduloVendaFuncionario));
 
         createUsuarioAdmin(grupoAdmin);
     }
@@ -340,74 +341,6 @@ public class AppStartupRunner implements ApplicationRunner {
         moduloUsuario.setFuncionalidades(funcionaldiades);
         moduloUsuario = moduloRepository.save(moduloUsuario);
         return moduloUsuario;
-    }
-
-    private Modulo createModuloProduto() {
-        Modulo moduloProduto = new Modulo();
-
-        moduloProduto.setMnemonico("PRODUTO");
-        moduloProduto.setNome("Manter Produto");
-        moduloProduto.setStatus(StatusAtivoInativo.ATIVO);
-        moduloProduto = moduloRepository.save(moduloProduto);
-
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
-                .filter(
-                        funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
-                ).collect(Collectors.toSet());
-
-        
-
-        Funcionalidade fProduto = new Funcionalidade();
-        fProduto.setMnemonico("STATUS");
-        fProduto.setNome("É Amigo");
-        fProduto.setStatus(StatusAtivoInativo.ATIVO);
-        funcionalidades.add(fProduto);
-
-
-        for(Funcionalidade funcionalidade: funcionalidades){
-            funcionalidade.setModulo(moduloProduto);
-        }
-
-        moduloProduto.setFuncionalidades(funcionalidades);
-        moduloProduto = moduloRepository.save(moduloProduto);
-
-        return moduloProduto;
-    }
-
-    private Modulo createModuloVenda() {
-        Modulo moduloVenda = new Modulo();
-
-        moduloVenda.setMnemonico("VENDA");
-        moduloVenda.setNome("Manter Produto ");
-        moduloVenda.setStatus(StatusAtivoInativo.ATIVO);
-        moduloVenda = moduloRepository.save(moduloVenda);
-
-        Set<Funcionalidade> funcionalidades = getFuncionalidadesAdminGerente().stream()
-                .filter(
-                        funcionalidade -> !funcionalidade.getMnemonico().equals("ATIVAR_INATIVAR")
-                ).collect(Collectors.toSet());
-
-        Funcionalidade fManter = new Funcionalidade();
-        fManter.setMnemonico("REMOVER");
-        fManter.setNome("Remover");
-        fManter.setStatus(StatusAtivoInativo.ATIVO);
-        funcionalidades.add(fManter);
-
-        Funcionalidade fVenda = new Funcionalidade();
-        fVenda.setMnemonico("STATUS");
-        fVenda.setNome("É Amigo");
-        fVenda.setStatus(StatusAtivoInativo.ATIVO);
-        funcionalidades.add(fVenda);
-
-
-        for(Funcionalidade funcionalidade: funcionalidades){
-            funcionalidade.setModulo(moduloVenda);
-        }
-
-        moduloVenda.setFuncionalidades(funcionalidades);
-        moduloVenda = moduloRepository.save(moduloVenda);
-
-        return moduloVenda;
     }
 
     private Modulo createModuloTipoProduto() {
