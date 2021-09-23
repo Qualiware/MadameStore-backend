@@ -99,8 +99,7 @@ public class VendaService {
 		if (venda.getValorTotal() == null)
 			invalido = Boolean.TRUE;
 
-		if (venda.getQuantidade() == null)
-			invalido = Boolean.TRUE;
+
 
 		if (invalido) {
 			throw new BusinessException(SistemaMessageCode.ERRO_CAMPOS_OBRIGATORIOS);

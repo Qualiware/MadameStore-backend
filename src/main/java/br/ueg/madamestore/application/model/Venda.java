@@ -30,8 +30,4 @@ class Venda {
     @Column(name = "DATA_VENDA",nullable = false)
     private LocalDate dataVenda;
 
-    @Column(name="QUANTIDADE", nullable = false)
-    private Integer quantidade;
-
-
 }

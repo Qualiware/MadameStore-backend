@@ -18,6 +18,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Classe de transferência referente a entidade {@link UsuarioGrupo}.
@@ -47,6 +48,9 @@ public @Data class ItemVendaDTO implements Serializable {
 
 	@ApiModelProperty(value = "quantidade do produto")
 	private String quantidade;
+
+	@ApiModelProperty(value = "quantidade do produto vendida")
+	private String quantidadeVendida;
 
 
 	@ApiModelProperty(value = "valor liquido do produto")

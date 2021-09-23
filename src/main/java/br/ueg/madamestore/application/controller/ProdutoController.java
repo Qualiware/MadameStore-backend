@@ -135,7 +135,7 @@ public class ProdutoController extends AbstractController {
             @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
             @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
     })
-    @GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+    @GetMapping(path = "/ativos", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getProdutos() {
         List<Produto> produtos = produtoService.getTodos();
         List<ProdutoDTO> produtosDTO = new ArrayList<>();

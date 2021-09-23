@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "TBL_ITEM_VENDA", schema = Constante.DATABASE_OWNER)
@@ -38,4 +39,7 @@ public @Data class ItemVenda implements Serializable {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID_PRODUTO", nullable = false)
 	private Produto produto;
+
+	@Column(name="QUANTIDADE", nullable = false)
+	private Integer quantidadeVendida;
 }

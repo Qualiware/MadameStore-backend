@@ -31,7 +31,5 @@ class VendaDTO implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate dataVenda;
 
-    @ApiModelProperty(value = "quantidade do Produto")
-    private String quantidade;
 
 }
