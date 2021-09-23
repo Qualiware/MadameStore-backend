@@ -87,11 +87,19 @@ public class AppStartupRunner implements ApplicationRunner {
         Modulo moduloVendaFuncionario = createModuloFuncionario("VENDA", "Gerenciar Venda");
 
 
-        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto, moduloVenda));
 
-        Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto, moduloVenda));
 
-        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro, moduloVendaFuncionario));
+
+        Modulo moduloCliente = createModuloCrud("CLIENTE", "Manter Cliente");
+        Modulo moduloClienteFuncionario = createModuloFuncionario("CLIENTE", "Gerenciar Cliente");
+
+
+
+        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto, moduloVenda, moduloCliente));
+
+        Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto, moduloVenda, moduloCliente));
+
+        Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro, moduloVendaFuncionario, moduloClienteFuncionario));
 
         createUsuarioAdmin(grupoAdmin);
     }
