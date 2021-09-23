@@ -62,6 +62,9 @@ public @Data class UsuarioDTO implements Serializable {
 	@ApiModelProperty(value = "Cpf do Usuário")
 	private String cpf;
 
+	@ApiModelProperty(value = "Senha do Usuário")
+	private String senha;
+
 	@ApiModelProperty(value = "Código do Status do Usuário")
 	private boolean status;
 

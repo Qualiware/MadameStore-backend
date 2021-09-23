@@ -64,9 +64,14 @@ public class UsuarioRepositoryImpl implements UsuarioRepositoryCustom {
 				"LEFT JOIN FETCH ug.grupo g ");
 		jpql.append(" WHERE 1=1 ");
 		
-		if (!Util.isEmpty(filtroDTO.getLogin())) {
-			jpql.append(" AND UPPER(usuario.login) LIKE UPPER('%' || :login || '%') ");
-			parametros.put("login", filtroDTO.getLogin());
+		if (!Util.isEmpty(filtroDTO.getCpf())) {
+			jpql.append(" AND numr_cpf LIKE '%' || :numr_cpf || '%' ");
+			parametros.put("numr_cpf", filtroDTO.getCpf());
+		}
+
+		if (!Util.isEmpty(filtroDTO.getEmail())) {
+			jpql.append(" AND email LIKE '%' || :email || '%' ");
+			parametros.put("email", filtroDTO.getEmail());
 		}
 		
 		if (!Util.isEmpty(filtroDTO.getNome())) {
