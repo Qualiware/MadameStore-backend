@@ -73,6 +73,7 @@ public class UsuarioController extends AbstractController {
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> incluir(@ApiParam(value = "Informações do Usuário", required = true) @Valid @RequestBody UsuarioDTO usuarioDTO) {
 		Usuario usuario = usuarioMapper.toEntity(usuarioDTO);
+		usuario.setSenha(usuarioDTO.getSenha());
 		usuarioService.configurarUsuarioGruposAndTelefones(usuario);
 		usuario = usuarioService.salvar(usuario);
 		usuarioDTO = usuarioMapper.toDTO(usuario);

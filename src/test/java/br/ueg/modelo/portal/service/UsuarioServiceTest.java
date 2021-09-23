@@ -598,7 +598,7 @@ public class UsuarioServiceTest {
 	private FiltroUsuarioDTO getFiltroUsuarioDTOMock() {
 		FiltroUsuarioDTO filtroDTO = new FiltroUsuarioDTO();
 		filtroDTO.setNome("Nome");
-		filtroDTO.setLogin("user.name");
+		filtroDTO.setCpf("user.cpf");
 		filtroDTO.setIdStatus(StatusAtivoInativo.ATIVO.getId());
 		return filtroDTO;
 	}

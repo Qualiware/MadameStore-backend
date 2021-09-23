@@ -67,7 +67,7 @@ public class UsuarioService {
 			LocalDate dataCadastro = LocalDate.now();
 			usuario.setDataAtualizado(dataCadastro);
 			usuario.setDataCadastrado(dataCadastro);
-			usuario.setSenha(new BCryptPasswordEncoder().encode("123456"));
+			usuario.setSenha(new BCryptPasswordEncoder().encode(usuario.getSenha()));
 			//usuario.setNome(user.getFirstName().concat(user.getLastName()));
 
 		} else {
@@ -177,7 +177,11 @@ public class UsuarioService {
 			}
 		}
 
-		if (!Util.isEmpty(filtroDTO.getLogin())) {
+		if (!Util.isEmpty(filtroDTO.getCpf())) {
+			vazio = Boolean.FALSE;
+		}
+
+		if (!Util.isEmpty(filtroDTO.getEmail())) {
 			vazio = Boolean.FALSE;
 		}
 

@@ -26,13 +26,17 @@ public @Data class FiltroUsuarioDTO implements Serializable {
 
     private static final long serialVersionUID = 3180319002111253549L;
 
-    @Size(max = 39)
-    @ApiModelProperty(value = "Login do Usuário")
-    private String login;
-
     @Size(max = 100)
     @ApiModelProperty(value = "Nome do Usuário")
     private String nome;
+
+    @Size(max = 14)
+    @ApiModelProperty(value = "Cpf do usuário")
+    private String cpf;
+
+    @Size(max = 50)
+    @ApiModelProperty(value = "Email do usuário")
+    private String email;
 
     @ApiModelProperty(value = "Código do Status do Usuário")
     private String idStatus;
