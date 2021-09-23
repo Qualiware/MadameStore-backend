@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 
+
 @SpringBootApplication
 @EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages = "br.ueg.madamestore.*")
 public class ModeloApplication {
