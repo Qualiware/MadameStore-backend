@@ -23,6 +23,16 @@ class VendaDTO implements Serializable {
     @ApiModelProperty(value = "nome do Produto")
     private List<ProdutoDTO> produto;
 
+    @ApiModelProperty(value = "itemVendas")
+    private List<ItemVendaDTO> itemVenda;
+
+
+    @ApiModelProperty(value = "Id do Cliente")
+    private Long idCliente;
+
+    @ApiModelProperty(value = "nome do cliente")
+    private String nomeCliente;
+
     @ApiModelProperty(value = "valor venda")
     private String valorTotal;
 

@@ -87,17 +87,17 @@ public class VendaService {
      * @param venda
      */
 	private void validarCamposObrigatorios(final Venda venda) {
-		boolean invalido = Boolean.FALSE;
+		boolean invalido = Boolean.TRUE;
 
 		if (venda.getDataVenda()== null) {
-			invalido = Boolean.TRUE;
+			invalido = Boolean.FALSE;
 		}
 
 		if (venda.getItemVenda() == null)
-			invalido = Boolean.TRUE;
+			invalido = Boolean.FALSE;
 
 		if (venda.getValorTotal() == null)
-			invalido = Boolean.TRUE;
+			invalido = Boolean.FALSE;
 
 
 
@@ -149,7 +149,7 @@ public class VendaService {
 			vazio = Boolean.FALSE;
 		}
 
-		if (filtroDTO.getIdProduto()!=null) {
+		if (filtroDTO.getIdVenda()!=null) {
 			vazio = Boolean.FALSE;
 		}
 

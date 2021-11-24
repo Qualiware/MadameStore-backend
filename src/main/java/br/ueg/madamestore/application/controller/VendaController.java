@@ -9,19 +9,18 @@
 package br.ueg.madamestore.application.controller;
 
 import br.ueg.madamestore.api.util.Validation;
-import br.ueg.madamestore.application.dto.FiltroUsuarioDTO;
-import br.ueg.madamestore.application.dto.FiltroVendaDTO;
-import br.ueg.madamestore.application.dto.UsuarioDTO;
-import br.ueg.madamestore.application.dto.VendaDTO;
+import br.ueg.madamestore.application.dto.*;
 import br.ueg.madamestore.application.enums.StatusAtivoInativo;
 import br.ueg.madamestore.application.mapper.UsuarioMapper;
 import br.ueg.madamestore.application.mapper.VendaMapper;
+import br.ueg.madamestore.application.model.Produto;
 import br.ueg.madamestore.application.model.Usuario;
 import br.ueg.madamestore.application.model.Venda;
 import br.ueg.madamestore.application.service.UsuarioService;
 import br.ueg.madamestore.application.service.VendaService;
 import br.ueg.madamestore.comum.exception.MessageResponse;
 import io.swagger.annotations.*;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -40,7 +39,7 @@ import java.util.List;
  */
 @Api(tags = "Venda API")
 @RestController
-@RequestMapping("${app.api.base}/vendas")
+@RequestMapping("${app.api.base}/venda")
 public class VendaController extends AbstractController {
 
 	@Autowired
@@ -65,7 +64,8 @@ public class VendaController extends AbstractController {
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> incluir(@ApiParam(value = "Informações da Venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
 		Venda venda = vendaMapper.toEntity(vendaDTO);
-		vendaService.configurarVendaProduto(venda);
+
+		//vendaService.configurarVendaProduto(venda);
 		venda = vendaService.salvar(venda);
 		vendaDTO = vendaMapper.toDTO(venda);
 		return ResponseEntity.ok(vendaDTO);
@@ -166,9 +166,13 @@ public class VendaController extends AbstractController {
 	public ResponseEntity<?> getVendaByFiltro(@ApiParam(value = "Filtro de pesquisa", required = true) @Valid @ModelAttribute("filtroDTO") final FiltroVendaDTO filtroDTO) {
 		List<Venda> vendas = vendaService.getVendaByFiltro(filtroDTO);
 		List<VendaDTO> vendasDTO = new ArrayList<>();
-		for (Venda venda: vendas) {
-			venda.setItemVenda(null);
-			vendasDTO.add (vendaMapper.toDTO(venda));
+		if(vendas.size() > 0){
+			for (Venda g:
+
+					vendas) {
+				VendaDTO vendaDTO = vendaMapper.toDTO(g);
+				vendasDTO.add(vendaDTO);
+			}
 		}
 
 		return ResponseEntity.ok(vendasDTO);

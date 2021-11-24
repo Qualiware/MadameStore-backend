@@ -19,6 +19,11 @@ class Venda {
     @Column(name = "ID_VENDA", nullable = false)
     private Long id;
 
+    @EqualsAndHashCode.Exclude
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE", nullable = false)
+    private Cliente cliente;
+
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "venda", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
