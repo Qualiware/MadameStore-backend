@@ -19,10 +19,12 @@ class Venda {
     @Column(name = "ID_VENDA", nullable = false)
     private Long id;
 
+    /*
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE", nullable = false)
+    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE", nullable = true)
     private Cliente cliente;
+    */
 
 
     @EqualsAndHashCode.Exclude

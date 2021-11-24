@@ -26,8 +26,8 @@ public interface VendaMapper {
      * @return
      */
 
-    @Mapping(source = "cliente.id", target = "idCliente")
-    @Mapping(source = "cliente.nome", target = "nomeCliente")
+    //@Mapping(source = "cliente.id", target = "idCliente")
+    //@Mapping(source = "cliente.nome", target = "nomeCliente")
 
     public VendaDTO toDTO(Venda venda);
 
