@@ -25,14 +25,15 @@ public class VendaRepositoryImpl implements VendaRepositoryCustom {
         Map<String, Object> parametros = new HashMap<>();
         StringBuilder jpql = new StringBuilder();
         jpql.append(" SELECT DISTINCT venda FROM Venda venda");
-        jpql.append(" INNER JOIN FETCH venda.produto produto");
+        jpql.append(" INNER JOIN FETCH venda.itemVenda itemVenda");
+        jpql.append(" INNER JOIN FETCH venda.cliente cliente");
 
         jpql.append(" WHERE 1=1 ");
 
 
-        if (filtroVendaDTO.getIdProduto()!=null) {
+        if (filtroVendaDTO.getIdVenda()!=null) {
             jpql.append(" AND venda.produto.id = :idProduto ");
-            parametros.put("idProduto", filtroVendaDTO.getIdProduto());
+            parametros.put("idProduto", filtroVendaDTO.getIdVenda());
         }
 
         if (filtroVendaDTO.getValorTotal() != null) {

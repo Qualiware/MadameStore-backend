@@ -17,7 +17,7 @@ import org.mapstruct.Mapping;
  *
  * @author UEG
  */
-@Mapper(componentModel = "spring", uses = { ProdutoMapper.class})
+@Mapper(componentModel = "spring", uses = { ProdutoMapper.class, ItemVendaMapper.class})
 public interface VendaMapper {
     /**
      * Converte a entidade {@link Venda} em DTO {@link VendaDTO}
@@ -25,6 +25,9 @@ public interface VendaMapper {
      * @param venda
      * @return
      */
+
+    @Mapping(source = "cliente.id", target = "idCliente")
+    @Mapping(source = "cliente.nome", target = "nomeCliente")
 
     public VendaDTO toDTO(Venda venda);
 

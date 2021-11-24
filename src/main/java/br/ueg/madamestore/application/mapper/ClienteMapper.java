@@ -19,7 +19,7 @@ public interface ClienteMapper {
      * @param cliente
      * @return
      */
-    @Mapping(source = "cliente.telefone", target = "telefone")
+
     public ClienteDTO toDTO(Cliente cliente);
 
     /**
@@ -28,6 +28,6 @@ public interface ClienteMapper {
      * @param clienteDTO
      * @return
      */
-    @Mapping(source = "cliente.telefone", target = "telefone")
+
     public Cliente toEntity(ClienteDTO clienteDTO);
 }

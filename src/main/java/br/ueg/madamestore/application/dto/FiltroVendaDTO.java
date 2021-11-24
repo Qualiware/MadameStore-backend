@@ -14,8 +14,8 @@ import java.time.LocalDate;
 @ApiModel(value = "Dados do filtro de pesquisa de Venda")
 public @Data class FiltroVendaDTO implements Serializable {
 
-    @ApiModelProperty(value = "Id do Produto")
-    private Long idProduto;
+    @ApiModelProperty(value = "Id da Venda")
+    private Long idVenda;
 
     @ApiModelProperty(value = "Valor Total")
     private Double valorTotal;
