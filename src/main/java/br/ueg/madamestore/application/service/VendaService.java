@@ -13,6 +13,8 @@ import br.ueg.madamestore.application.dto.*;
 import br.ueg.madamestore.application.enums.StatusAtivoInativo;
 import br.ueg.madamestore.application.exception.SistemaMessageCode;
 import br.ueg.madamestore.application.model.*;
+import br.ueg.madamestore.application.repository.ClienteRepository;
+import br.ueg.madamestore.application.repository.ProdutoRepository;
 import br.ueg.madamestore.application.repository.VendaRepository;
 import br.ueg.madamestore.comum.exception.BusinessException;
 import br.ueg.madamestore.comum.util.CollectionUtil;
@@ -41,6 +43,11 @@ public class VendaService {
 	@Autowired
 	private VendaRepository vendaRepository;
 
+	@Autowired
+	private ProdutoRepository produtoRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
 
 	@Autowired
 	private AuthService authService;
@@ -52,18 +59,34 @@ public class VendaService {
      * @return
      */
 	public Venda salvar(Venda venda) {
+		configurarVendaProduto(venda);
+		buscarProduto(venda);
+		buscarCliente(venda);
 		validarCamposObrigatorios(venda);
-		//for(Produto produto: venda.getProdutos());
-		//Produto produto= (Produto) venda.getProduto();
-		//if(venda.getProduto().getQuantidade() < venda.getQuantidade())
-		//{
-		//	throw new BusinessException(ERRO_QUANTIDADE_DE_PRODUTOS_INSUFICIENTE);
-		//}
-
-
-
-		venda = vendaRepository.save(venda);
+		venda= vendaRepository.save(venda);
+		venda = vendaRepository.findByIdFetch(venda.getId()).get();
 		return venda;
+	}
+
+	private void buscarCliente(Venda venda) {
+		Cliente cliente;
+		cliente= clienteRepository.getOne(venda.getCliente().getId());
+
+		if(cliente==null){
+			throw new BusinessException(SistemaMessageCode.ERRO_CLIENTE_NAO_ENCONTRADO);
+		}
+		venda.setCliente(cliente);
+	}
+
+	private void buscarProduto(Venda venda) {
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			itemVenda.setProduto(produto);
+		}
 	}
 
 	/**
@@ -87,17 +110,17 @@ public class VendaService {
      * @param venda
      */
 	private void validarCamposObrigatorios(final Venda venda) {
-		boolean invalido = Boolean.TRUE;
+		boolean invalido = Boolean.FALSE;
 
 		if (venda.getDataVenda()== null) {
-			invalido = Boolean.FALSE;
+			invalido = Boolean.TRUE;
 		}
 
 		if (venda.getItemVenda() == null)
-			invalido = Boolean.FALSE;
+			invalido = Boolean.TRUE;
 
 		if (venda.getValorTotal() == null)
-			invalido = Boolean.FALSE;
+			invalido = Boolean.TRUE;
 
 
 

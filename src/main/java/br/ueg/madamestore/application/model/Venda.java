@@ -3,6 +3,7 @@ package br.ueg.madamestore.application.model;
 import br.ueg.madamestore.application.configuration.Constante;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +13,7 @@ import java.util.Set;
 @Table(name = "TBL_VENDA", schema = Constante.DATABASE_OWNER)
 @EqualsAndHashCode()
 @SequenceGenerator(name = "TBL_S_VENDA", sequenceName = "TBL_S_VENDA", allocationSize = 1, schema = Constante.DATABASE_OWNER)
+@ToString
 public @Data
 class Venda {
     @Id
@@ -19,12 +21,12 @@ class Venda {
     @Column(name = "ID_VENDA", nullable = false)
     private Long id;
 
-    /*
+
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE", nullable = true)
+    @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE")
     private Cliente cliente;
-    */
+
 
 
     @EqualsAndHashCode.Exclude

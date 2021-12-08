@@ -26,7 +26,7 @@ public class VendaRepositoryImpl implements VendaRepositoryCustom {
         StringBuilder jpql = new StringBuilder();
         jpql.append(" SELECT DISTINCT venda FROM Venda venda");
         jpql.append(" INNER JOIN FETCH venda.itemVenda itemVenda");
-
+        jpql.append(" INNER JOIN FETCH venda.cliente cliente");
         jpql.append(" WHERE 1=1 ");
 
 

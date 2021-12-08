@@ -34,7 +34,8 @@ public interface VendaRepository extends JpaRepository<Venda, Long>, VendaReposi
      * @return
      */
     @Query("SELECT venda from Venda venda " +
-            " INNER JOIN FETCH venda.itemVenda produto")
+            " INNER JOIN FETCH venda.itemVenda produto"+
+            "INNER JOIN FETCH venda.cliente cliente")
     public List<Venda> getTodos();
 
     /**
@@ -44,7 +45,8 @@ public interface VendaRepository extends JpaRepository<Venda, Long>, VendaReposi
      * @return
      */
     @Query("SELECT venda from Venda venda " +
-            " INNER JOIN FETCH venda.itemVenda produto " +
+            " INNER JOIN FETCH venda.itemVenda itemVenda " +
+            " INNER JOIN FETCH venda.cliente cliente"+
             " WHERE venda.id = :idVenda ")
     public Optional<Venda> findByIdFetch( @Param("idVenda") final Long idVenda);
 

@@ -9,10 +9,8 @@
 package br.ueg.madamestore.application.model;
 
 import br.ueg.madamestore.application.configuration.Constante;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.apache.commons.lang3.builder.ToStringExclude;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -24,6 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SequenceGenerator(name = "TBL_S_ITEM_VENDA", sequenceName = "TBL_S_ITEM_VENDA", allocationSize = 1, schema = Constante.DATABASE_OWNER)
+@ToString
 public @Data class ItemVenda implements Serializable {
 
 
@@ -34,6 +33,7 @@ public @Data class ItemVenda implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "ID_VENDA", referencedColumnName = "ID_VENDA", nullable = false)
+	@ToStringExclude
 	private Venda venda;
 
 	@ManyToOne(fetch = FetchType.LAZY)
