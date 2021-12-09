@@ -32,7 +32,7 @@ public class AmigoController extends AbstractController {
     @Autowired
     private AmigoService amigoService;
 
-    @PreAuthorize("hasRole('ROLE_AMIGO_INCLUIR')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @PostMapping
     @ApiOperation(value = "Inclusão de amigo.",
             notes = "Incluir Amigo.")
@@ -53,7 +53,7 @@ public class AmigoController extends AbstractController {
      * @param amigoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_ALTERAR')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Altera as informações de Amigo.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
@@ -76,7 +76,7 @@ public class AmigoController extends AbstractController {
      * @param id
      * s@return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Retorna as informações do Amigo pelo id informado.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
@@ -97,7 +97,7 @@ public class AmigoController extends AbstractController {
      * @param filtroAmigoDTO
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Pesquisa de Amigo.",
             notes = "Recupera as informações de Amigo conforme dados informados no filtro de busca", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
@@ -124,7 +124,7 @@ public class AmigoController extends AbstractController {
      *
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_PESQUISAR')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Retorna uma lista de Amigos cadastrados.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
@@ -148,7 +148,7 @@ public class AmigoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_REMOVER')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Remove um Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
@@ -168,7 +168,7 @@ public class AmigoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_STATUS')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Tonar Amigo do Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
@@ -190,7 +190,7 @@ public class AmigoController extends AbstractController {
      * @param id
      * @return
      */
-    @PreAuthorize("hasRole('ROLE_AMIGO_STATUS')")
+    @PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
     @ApiOperation(value = "Deixar de ser Amigo do Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
             @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),

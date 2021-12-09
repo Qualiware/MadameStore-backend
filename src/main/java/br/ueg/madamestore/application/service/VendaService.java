@@ -31,6 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static br.ueg.madamestore.application.exception.SistemaMessageCode.ERRO_QUANTIDADE_DE_PRODUTOS_INSUFICIENTE;
@@ -73,7 +74,7 @@ public class VendaService {
 
 		if(venda.getId() == null && venda.getStatusVendido() == null){
 
-			venda.setStatusVendido(StatusVendido.SIM);
+			venda.setStatusVendido(StatusVendido.NAO);
 		}
 
 		configurarVendaProduto(venda);
@@ -84,6 +85,69 @@ public class VendaService {
 		venda= vendaRepository.save(venda);
 		venda = vendaRepository.findByIdFetch(venda.getId()).get();
 		return venda;
+	}
+
+	public void aumentarQuantidadeVendida(Venda venda){
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else {
+			}
+			;
+		}
+
+	}
+	public void retiraVendaAlterarQuantidade(VendaDTO venda){
+		//configurarVendaProduto(venda);
+		//for (ItemVenda itemVenda : venda.getItemVenda()) {
+		//	Produto produto;
+
+		//	produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+		//	if(produto==null){
+		//		throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+		//	}
+		//	else{
+
+		//	}
+		//	itemVenda.setProduto(produto);
+		//}
+
+
+	}
+
+
+	public void retiraQuantidade(Venda venda){
+		configurarVendaProduto(venda);
+		//List<Produto> produto=
+				buscarProduto(venda);
+	//	for(int i=0; produto!=null; i++){
+		//	Produto produto1=produto.get(i);
+		//	produto1.setQuantidade();
+
+		//}
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else{
+				if(produto.getQuantidadeVendida()==null){
+					produto.setQuantidadeVendida(0);
+				}
+				produto.setQuantidade(produto.getQuantidade()-itemVenda.getQuantidadeVendida());
+				produto.setQuantidadeVendida(produto.getQuantidadeVendida()+itemVenda.getQuantidadeVendida());
+			}
+			itemVenda.setProduto(produto);
+		}
+
 	}
 
 	private void validaTotalQuantidade(Venda venda) {
@@ -107,15 +171,19 @@ public class VendaService {
 		venda.setCliente(cliente);
 	}
 
-	private void buscarProduto(Venda venda) {
+	private List<Produto> buscarProduto(Venda venda) {
+		List<Produto> produto1= new ArrayList<>();
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
+
 			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
 			if(produto==null){
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 			itemVenda.setProduto(produto);
+			produto1.add(produto);
 		}
+		return produto1;
 	}
 
 	/**

@@ -76,13 +76,15 @@ public class VendaController extends AbstractController {
 	})
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> incluir(@ApiParam(value = "Informações da Venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
-		vendaDTO.setStatusVendido(true);
+		vendaDTO.setStatusVendido(false);
 		vendaDTO.setStatusEspera(true);
 		Venda venda=vendaMapper.toEntity(vendaDTO);
 
 
 
 		//vendaService.configurarVendaProduto(venda);
+		vendaService.retiraQuantidade(venda);
+		vendaService.aumentarQuantidadeVendida(venda);
 		venda = vendaService.salvar(venda);
 		vendaDTO = vendaMapper.toDTO(venda);
 		return ResponseEntity.ok(vendaDTO);
@@ -107,6 +109,8 @@ public class VendaController extends AbstractController {
 		Venda venda = vendaMapper.toEntity(vendaDTO);
 		vendaService.configurarVendaProduto(venda);
 		venda.setId(id.longValue());
+		//vendaService.retiraVendaAlterarQuantidade(venda);
+		//vendaService.diminuirQuantidadeVendida(venda);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaDTO);
     }
@@ -214,6 +218,7 @@ public class VendaController extends AbstractController {
 	public ResponseEntity<?> tonarVendaEspera(@ApiParam(value = "Id da venda", required = true) @PathVariable final BigDecimal id) {
 		Validation.max("id", id, 99999999L);
 		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusVendido(StatusVendido.NAO);
 		venda.setStatusEspera(StatusEspera.SIM);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaMapper.toDTO(venda));
@@ -238,6 +243,7 @@ public class VendaController extends AbstractController {
 	public ResponseEntity<?> deixarVendaEspera(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
 		Validation.max("id", id, 99999999L);
 		Venda venda = vendaService.getById(id.longValue());
+
 		venda.setStatusEspera(StatusEspera.NAO);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaMapper.toDTO(venda));
