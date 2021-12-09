@@ -34,11 +34,13 @@ class VendaDTO implements Serializable {
     @ApiModelProperty(value = "nome do cliente")
     private String nomeCliente;
 
+
     @ApiModelProperty(value = "Indica se o Amigo ainda é meu amigo")
     private Boolean statusEspera;
 
     @ApiModelProperty(value = "Indica se o Amigo ainda é meu amigo")
     private Boolean statusVendido;
+
 
     @ApiModelProperty(value = "valor venda")
     private String valorTotal;
