@@ -185,7 +185,7 @@ public class VendaService {
 
 	public void adicionaValoresProduto(Venda venda) {
 		configurarVendaProduto(venda);
-		System.out.println(venda.getItemVenda()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+		//System.out.println(venda.getItemVenda()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
@@ -198,7 +198,7 @@ public class VendaService {
 					produto.setQuantidadeVendida(0);
 				}
 				System.out.println("ENTROU 1111111111");
-				produto.setQuantidade(0);
+				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
 				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
 			}
 			itemVenda.setProduto(produto);

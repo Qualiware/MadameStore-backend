@@ -83,8 +83,9 @@ public class VendaController extends AbstractController {
 
 
 		//vendaService.configurarVendaProduto(venda);
-		vendaService.retiraQuantidade(venda);
+
 		venda = vendaService.salvar(venda);
+		vendaService.retiraQuantidade(venda);
 		vendaDTO = vendaMapper.toDTO(venda);
 		return ResponseEntity.ok(vendaDTO);
 	}
@@ -158,6 +159,8 @@ public class VendaController extends AbstractController {
 	public  ResponseEntity<?> alterarProduto(@ApiParam(value = "Código do Usuário", required = true) @PathVariable final BigDecimal id, @ApiParam(value = "Informações de venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
 		Validation.max("id", id, 99999999L);
 		Venda venda = vendaMapper.toEntity(vendaDTO);
+		vendaService.configurarVendaProduto(venda);
+		venda.setId(id.longValue());
 		vendaService.adicionaValoresProduto(venda);
 		return ResponseEntity.ok(vendaDTO);
 	}
@@ -265,7 +268,6 @@ public class VendaController extends AbstractController {
 	public ResponseEntity<?> deixarVendaEspera(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
 		Validation.max("id", id, 99999999L);
 		Venda venda = vendaService.getById(id.longValue());
-
 		venda.setStatusEspera(StatusEspera.NAO);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaMapper.toDTO(venda));
