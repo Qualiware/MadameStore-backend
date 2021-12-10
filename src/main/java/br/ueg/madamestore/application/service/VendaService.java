@@ -23,6 +23,7 @@ import br.ueg.madamestore.application.repository.VendaRepository;
 import br.ueg.madamestore.comum.exception.BusinessException;
 import br.ueg.madamestore.comum.util.CollectionUtil;
 import br.ueg.madamestore.comum.util.Util;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -66,6 +67,8 @@ public class VendaService {
      * @param venda
      * @return
      */
+
+
 	public Venda salvar(Venda venda) {
 
 		if(venda.getId() == null && venda.getStatusEspera() == null){
@@ -123,13 +126,8 @@ public class VendaService {
 
 	public void retiraQuantidade(Venda venda){
 		configurarVendaProduto(venda);
-		//List<Produto> produto=
-				buscarProduto(venda);
-	//	for(int i=0; produto!=null; i++){
-		//	Produto produto1=produto.get(i);
-		//	produto1.setQuantidade();
-
-		//}
+		//buscarProduto(venda);
+		//System.out.println(venda.getItemVenda().toString()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
@@ -171,8 +169,8 @@ public class VendaService {
 		venda.setCliente(cliente);
 	}
 
-	private List<Produto> buscarProduto(Venda venda) {
-		List<Produto> produto1= new ArrayList<>();
+	private void buscarProduto(Venda venda) {
+
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
 
@@ -181,10 +179,34 @@ public class VendaService {
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 			itemVenda.setProduto(produto);
-			produto1.add(produto);
+
 		}
-		return produto1;
 	}
+
+	public void adicionaValoresProduto(Venda venda) {
+		configurarVendaProduto(venda);
+		System.out.println(venda.getItemVenda()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto = produtoRepository.getOne(itemVenda.getProduto().getId());
+			if (produto == null) {
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			} else {
+				if (produto.getQuantidadeVendida() == null) {
+					produto.setQuantidadeVendida(0);
+				}
+				System.out.println("ENTROU 1111111111");
+				produto.setQuantidade(0);
+				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
+			}
+			itemVenda.setProduto(produto);
+		}
+		vendaRepository.save(venda);
+
+	}
+
 
 	/**
 	 * Configura o {@link Venda} dentro de  {@link TelefoneUsuario} para salvar.
@@ -197,6 +219,7 @@ public class VendaService {
 		for (ItemVenda itemVenda : venda.getItemVenda()){
 			itemVenda.setVenda(venda);
 		}
+
 
 	}
 

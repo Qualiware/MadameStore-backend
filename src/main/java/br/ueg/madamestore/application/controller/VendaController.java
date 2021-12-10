@@ -84,7 +84,6 @@ public class VendaController extends AbstractController {
 
 		//vendaService.configurarVendaProduto(venda);
 		vendaService.retiraQuantidade(venda);
-		vendaService.aumentarQuantidadeVendida(venda);
 		venda = vendaService.salvar(venda);
 		vendaDTO = vendaMapper.toDTO(venda);
 		return ResponseEntity.ok(vendaDTO);
@@ -111,6 +110,7 @@ public class VendaController extends AbstractController {
 		venda.setId(id.longValue());
 		//vendaService.retiraVendaAlterarQuantidade(venda);
 		//vendaService.diminuirQuantidadeVendida(venda);
+		vendaService.retiraQuantidade(venda);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaDTO);
     }
@@ -140,6 +140,28 @@ public class VendaController extends AbstractController {
 
 		return ResponseEntity.ok(vendaTO);
 	}
+
+	/**
+	 * Altera a instância de {@link Venda} na base de dados.
+	 *
+	 * @param id
+	 * @param vendaDTO
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
+	@ApiOperation(value = "Altera as informações de venda na base de dados.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/alterar/{id:[\\d]+}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<?> alterarProduto(@ApiParam(value = "Código do Usuário", required = true) @PathVariable final BigDecimal id, @ApiParam(value = "Informações de venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaMapper.toEntity(vendaDTO);
+		vendaService.adicionaValoresProduto(venda);
+		return ResponseEntity.ok(vendaDTO);
+	}
+
 
 	/**
 	 * Retorna a lista de {@link VendaDTO} de acordo com os filtros
