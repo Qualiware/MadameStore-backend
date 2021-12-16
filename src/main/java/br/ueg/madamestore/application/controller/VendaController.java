@@ -319,4 +319,20 @@ public class VendaController extends AbstractController {
 		return ResponseEntity.ok(vendaMapper.toDTO(venda));
 	}
 
+	@PreAuthorize("hasRole('ROLE_VENDA_REMOVER')")
+	@ApiOperation(value = "Remove uma venda pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+					@ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
+					@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+					@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@DeleteMapping(path = "/{id:[\\d]+}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> remover(@ApiParam(value = "Id da venda", required = true) @PathVariable final BigDecimal id) {
+        Validation.max("id", id, 99999999L);
+
+				Venda venda = vendaService.remover(id.longValue());
+				
+        return ResponseEntity.ok(vendaMapper.toDTO(venda));
+    }
+
 }

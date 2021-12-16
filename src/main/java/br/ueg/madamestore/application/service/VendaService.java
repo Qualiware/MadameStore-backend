@@ -279,6 +279,10 @@ public class VendaService {
 	public Venda remover(Long id){
 		Venda venda = this.getById(id);
 
+		configurarVendaProduto(venda);
+		buscarProduto(venda);
+		buscarCliente(venda);
+
 		vendaRepository.delete(venda);
 
 		return venda;

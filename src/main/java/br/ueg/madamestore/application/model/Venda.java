@@ -30,7 +30,7 @@ class Venda {
 
 
     @EqualsAndHashCode.Exclude
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE")
     private Cliente cliente;
 
