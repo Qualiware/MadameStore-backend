@@ -140,8 +140,36 @@ public class VendaService {
 				if(produto.getQuantidadeVendida()==null){
 					produto.setQuantidadeVendida(0);
 				}
-				produto.setQuantidade(produto.getQuantidade()-itemVenda.getQuantidadeVendida());
-				produto.setQuantidadeVendida(produto.getQuantidadeVendida()+itemVenda.getQuantidadeVendida());
+				if(produto.getQuantidade()>=itemVenda.getQuantidadeVendida()){
+					produto.setQuantidade(produto.getQuantidade()-itemVenda.getQuantidadeVendida());
+					produto.setQuantidadeVendida(produto.getQuantidadeVendida()+itemVenda.getQuantidadeVendida());
+				}
+
+			}
+			itemVenda.setProduto(produto);
+		}
+
+	}
+
+
+	public void adicionarQuantidade(Venda venda){
+		configurarVendaProduto(venda);
+		//buscarProduto(venda);
+		//System.out.println(venda.getItemVenda().toString()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else{
+				if(produto.getQuantidadeVendida()==null){
+					produto.setQuantidadeVendida(0);
+				}
+				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
+				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
 			}
 			itemVenda.setProduto(produto);
 		}
@@ -282,8 +310,9 @@ public class VendaService {
 		configurarVendaProduto(venda);
 		buscarProduto(venda);
 		buscarCliente(venda);
-
+		adicionarQuantidade(venda);
 		vendaRepository.delete(venda);
+
 
 		return venda;
 	}
