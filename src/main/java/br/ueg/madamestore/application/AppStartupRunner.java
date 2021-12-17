@@ -55,6 +55,8 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @Autowired
     AmigoRepository amigoRepository;
+    @Autowired
+    MensagemRepository mensagemRepository;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -85,7 +87,10 @@ public class AppStartupRunner implements ApplicationRunner {
         
         Modulo moduloVenda = createModuloCrud("VENDA", "Manter Venda");
         Modulo moduloVendaFuncionario = createModuloFuncionario("VENDA", "Gerenciar Venda");
+        Modulo moduloAmigo=createModuloAmigo();
 
+
+        Modulo moduloMensagem= createModuloCrud("MENSAGEM","Manter Mensagem");
 
 
 
@@ -95,7 +100,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
 
 
-        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto, moduloVenda, moduloCliente));
+        Grupo grupoAdmin = createGrupoAdmin(Arrays.asList(moduloUsuario, moduloProduto, moduloTipoProduto, moduloVenda, moduloCliente,moduloAmigo,moduloMensagem));
 
         Grupo grupoGerente = createCrupoGerente(Arrays.asList(moduloProduto, moduloTipoProduto, moduloVenda, moduloCliente));
 

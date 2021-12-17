@@ -11,6 +11,14 @@ package br.ueg.madamestore.application.controller;
 import br.ueg.madamestore.api.util.Validation;
 import br.ueg.madamestore.application.dto.*;
 import br.ueg.madamestore.application.enums.StatusAtivoInativo;
+import br.ueg.madamestore.application.enums.StatusEspera;
+import br.ueg.madamestore.application.enums.StatusSimNao;
+import br.ueg.madamestore.application.enums.StatusVendido;
+import br.ueg.madamestore.application.mapper.EsperaMapper;
+import br.ueg.madamestore.application.mapper.UsuarioMapper;
+import br.ueg.madamestore.application.mapper.VendaMapper;
+import br.ueg.madamestore.application.mapper.VendidoMapper;
+import br.ueg.madamestore.application.model.Amigo;
 import br.ueg.madamestore.application.mapper.UsuarioMapper;
 import br.ueg.madamestore.application.mapper.VendaMapper;
 import br.ueg.madamestore.application.model.Produto;
@@ -48,6 +56,13 @@ public class VendaController extends AbstractController {
 	@Autowired
 	private VendaMapper vendaMapper;
 
+	@Autowired
+	private EsperaMapper esperaMapper;
+
+	@Autowired
+	private VendidoMapper vendidoMapper;
+
+
 	/**
 	 * Salva uma instância de {@link Venda} na base de dados.
 	 * 
@@ -63,10 +78,16 @@ public class VendaController extends AbstractController {
 	})
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> incluir(@ApiParam(value = "Informações da Venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
-		Venda venda = vendaMapper.toEntity(vendaDTO);
+		vendaDTO.setStatusVendido(false);
+		vendaDTO.setStatusEspera(true);
+		Venda venda=vendaMapper.toEntity(vendaDTO);
+
+
 
 		//vendaService.configurarVendaProduto(venda);
+
 		venda = vendaService.salvar(venda);
+		vendaService.retiraQuantidade(venda);
 		vendaDTO = vendaMapper.toDTO(venda);
 		return ResponseEntity.ok(vendaDTO);
 	}
@@ -90,6 +111,9 @@ public class VendaController extends AbstractController {
 		Venda venda = vendaMapper.toEntity(vendaDTO);
 		vendaService.configurarVendaProduto(venda);
 		venda.setId(id.longValue());
+		//vendaService.retiraVendaAlterarQuantidade(venda);
+		//vendaService.diminuirQuantidadeVendida(venda);
+		vendaService.retiraQuantidade(venda);
 		vendaService.salvar(venda);
 		return ResponseEntity.ok(vendaDTO);
     }
@@ -119,6 +143,30 @@ public class VendaController extends AbstractController {
 
 		return ResponseEntity.ok(vendaTO);
 	}
+
+	/**
+	 * Altera a instância de {@link Venda} na base de dados.
+	 *
+	 * @param id
+	 * @param vendaDTO
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_ALTERAR')")
+	@ApiOperation(value = "Altera as informações de venda na base de dados.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/alterar/{id:[\\d]+}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public  ResponseEntity<?> alterarProduto(@ApiParam(value = "Código do Usuário", required = true) @PathVariable final BigDecimal id, @ApiParam(value = "Informações de venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaMapper.toEntity(vendaDTO);
+		vendaService.configurarVendaProduto(venda);
+		venda.setId(id.longValue());
+		vendaService.adicionaValoresProduto(venda);
+		return ResponseEntity.ok(vendaDTO);
+	}
+
 
 	/**
 	 * Retorna a lista de {@link VendaDTO} de acordo com os filtros
@@ -177,5 +225,116 @@ public class VendaController extends AbstractController {
 
 		return ResponseEntity.ok(vendasDTO);
 	}
+
+
+
+	/**
+	 * Tornar Amigo do {@link Venda} pelo 'id' informado.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_INCLUIR')")
+	@ApiOperation(value = "Tonar Venda pendente pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/{id:[\\d]+}/tornar-vendaespera", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> tonarVendaEspera(@ApiParam(value = "Id da venda", required = true) @PathVariable final BigDecimal id) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusVendido(StatusVendido.NAO);
+		venda.setStatusEspera(StatusEspera.SIM);
+		vendaService.salvar(venda);
+		return ResponseEntity.ok(vendaMapper.toDTO(venda));
+	}
+
+
+
+	/**
+	 * Tornar Amigo do {@link Venda} pelo 'id' informado.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_INCLUIR')")
+	@ApiOperation(value = "Tonar Venda pendente pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/{id:[\\d]+}/deixar-vendaespera", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> deixarVendaEspera(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusEspera(StatusEspera.NAO);
+		vendaService.salvar(venda);
+		return ResponseEntity.ok(vendaMapper.toDTO(venda));
+	}
+
+	/**
+	 * Tornar Amigo do {@link Venda} pelo 'id' informado.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_INCLUIR')")
+	@ApiOperation(value = "Tonar Venda pendente pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/{id:[\\d]+}/deixar-vendido", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> deixarVendido(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusVendido(StatusVendido.NAO);
+		vendaService.salvar(venda);
+		return ResponseEntity.ok(vendaMapper.toDTO(venda));
+	}
+
+
+	/**
+	 * Tornar Amigo do {@link Venda} pelo 'id' informado.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@PreAuthorize("hasRole('ROLE_VENDA_INCLUIR')")
+	@ApiOperation(value = "Tonar Venda pendente pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/{id:[\\d]+}/tornar-vendido", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> tornarVendido(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusEspera(StatusEspera.NAO);
+		venda.setStatusVendido(StatusVendido.SIM);
+		vendaService.salvar(venda);
+		return ResponseEntity.ok(vendaMapper.toDTO(venda));
+	}
+
+	@PreAuthorize("hasRole('ROLE_VENDA_REMOVER')")
+	@ApiOperation(value = "Remove uma venda pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+					@ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
+					@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+					@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@DeleteMapping(path = "/{id:[\\d]+}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> remover(@ApiParam(value = "Id da venda", required = true) @PathVariable final BigDecimal id) {
+        Validation.max("id", id, 99999999L);
+
+				Venda venda = vendaService.remover(id.longValue());
+				
+        return ResponseEntity.ok(vendaMapper.toDTO(venda));
+    }
 
 }

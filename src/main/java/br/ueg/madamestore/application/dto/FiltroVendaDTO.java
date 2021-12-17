@@ -27,5 +27,11 @@ public @Data class FiltroVendaDTO implements Serializable {
     private LocalDate dataVenda;
 
 
+    @ApiModelProperty(value = "Indica se o Amigo ainda é meu amigo")
+    private Boolean statusVendido;
+
+    @ApiModelProperty(value = "Indica se o Amigo ainda é meu amigo")
+    private Boolean statusEspera;
+
 
 }

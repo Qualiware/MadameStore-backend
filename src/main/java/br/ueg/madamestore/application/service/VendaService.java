@@ -11,6 +11,13 @@ package br.ueg.madamestore.application.service;
 import br.ueg.madamestore.application.configuration.Constante;
 import br.ueg.madamestore.application.dto.*;
 import br.ueg.madamestore.application.enums.StatusAtivoInativo;
+import br.ueg.madamestore.application.enums.StatusEspera;
+import br.ueg.madamestore.application.enums.StatusSimNao;
+import br.ueg.madamestore.application.enums.StatusVendido;
+import br.ueg.madamestore.application.exception.SistemaMessageCode;
+import br.ueg.madamestore.application.model.*;
+import br.ueg.madamestore.application.repository.ClienteRepository;
+import br.ueg.madamestore.application.repository.ItemVendaRepository;
 import br.ueg.madamestore.application.exception.SistemaMessageCode;
 import br.ueg.madamestore.application.model.*;
 import br.ueg.madamestore.application.repository.ClienteRepository;
@@ -19,6 +26,7 @@ import br.ueg.madamestore.application.repository.VendaRepository;
 import br.ueg.madamestore.comum.exception.BusinessException;
 import br.ueg.madamestore.comum.util.CollectionUtil;
 import br.ueg.madamestore.comum.util.Util;
+import net.bytebuddy.implementation.bind.MethodDelegationBinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static br.ueg.madamestore.application.exception.SistemaMessageCode.ERRO_QUANTIDADE_DE_PRODUTOS_INSUFICIENTE;
@@ -50,6 +59,9 @@ public class VendaService {
 	private ClienteRepository clienteRepository;
 
 	@Autowired
+	private ItemVendaRepository itemVendaRepository;
+
+	@Autowired
 	private AuthService authService;
 
     /**
@@ -58,14 +70,124 @@ public class VendaService {
      * @param venda
      * @return
      */
+
+
 	public Venda salvar(Venda venda) {
+
+		if(venda.getId() == null && venda.getStatusEspera() == null){
+			venda.setStatusEspera(StatusEspera.SIM);
+		}
+
+		if(venda.getId() == null && venda.getStatusVendido() == null){
+
+			venda.setStatusVendido(StatusVendido.NAO);
+		}
+
 		configurarVendaProduto(venda);
+		//validaTotalQuantidade(venda);
 		buscarProduto(venda);
 		buscarCliente(venda);
 		validarCamposObrigatorios(venda);
 		venda= vendaRepository.save(venda);
 		venda = vendaRepository.findByIdFetch(venda.getId()).get();
 		return venda;
+	}
+
+	public void aumentarQuantidadeVendida(Venda venda){
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else {
+			}
+			;
+		}
+
+	}
+	public void retiraVendaAlterarQuantidade(VendaDTO venda){
+		//configurarVendaProduto(venda);
+		//for (ItemVenda itemVenda : venda.getItemVenda()) {
+		//	Produto produto;
+
+		//	produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+		//	if(produto==null){
+		//		throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+		//	}
+		//	else{
+
+		//	}
+		//	itemVenda.setProduto(produto);
+		//}
+
+
+	}
+
+
+	public void retiraQuantidade(Venda venda){
+		configurarVendaProduto(venda);
+		//buscarProduto(venda);
+		//System.out.println(venda.getItemVenda().toString()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else{
+				if(produto.getQuantidadeVendida()==null){
+					produto.setQuantidadeVendida(0);
+				}
+				if(produto.getQuantidade()>=itemVenda.getQuantidadeVendida()){
+					produto.setQuantidade(produto.getQuantidade()-itemVenda.getQuantidadeVendida());
+					produto.setQuantidadeVendida(produto.getQuantidadeVendida()+itemVenda.getQuantidadeVendida());
+				}
+
+			}
+			itemVenda.setProduto(produto);
+		}
+
+	}
+
+
+	public void adicionarQuantidade(Venda venda){
+		configurarVendaProduto(venda);
+		//buscarProduto(venda);
+		//System.out.println(venda.getItemVenda().toString()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			if(produto==null){
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			}
+			else{
+				if(produto.getQuantidadeVendida()==null){
+					produto.setQuantidadeVendida(0);
+				}
+				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
+				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
+			}
+			itemVenda.setProduto(produto);
+		}
+
+	}
+
+	private void validaTotalQuantidade(Venda venda) {
+		Produto produto;
+		//produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+
+
+
+		//if(produto.getQuantidade()<itemVenda.getProduto().getQuantidade()){
+			//throw new BusinessException(ERRO_QUANTIDADE_DE_PRODUTOS_INSUFICIENTE);
+		//}
 	}
 
 	private void buscarCliente(Venda venda) {
@@ -79,15 +201,43 @@ public class VendaService {
 	}
 
 	private void buscarProduto(Venda venda) {
+
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
+
 			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
 			if(produto==null){
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 			itemVenda.setProduto(produto);
+
 		}
 	}
+
+	public void adicionaValoresProduto(Venda venda) {
+		configurarVendaProduto(venda);
+		//System.out.println(venda.getItemVenda()+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+		for (ItemVenda itemVenda : venda.getItemVenda()) {
+			Produto produto;
+
+			produto = produtoRepository.getOne(itemVenda.getProduto().getId());
+			if (produto == null) {
+				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
+			} else {
+				if (produto.getQuantidadeVendida() == null) {
+					produto.setQuantidadeVendida(0);
+				}
+				System.out.println("ENTROU 1111111111");
+				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
+				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
+			}
+			itemVenda.setProduto(produto);
+		}
+		vendaRepository.save(venda);
+
+	}
+
 
 	/**
 	 * Configura o {@link Venda} dentro de  {@link TelefoneUsuario} para salvar.
@@ -97,9 +247,11 @@ public class VendaService {
 	public void configurarVendaProduto(Venda venda) {
 
 
-		for (ItemVenda itemVenda : venda.getItemVenda()) {
+		for (ItemVenda itemVenda : venda.getItemVenda()){
 			itemVenda.setVenda(venda);
 		}
+
+
 	}
 
 
@@ -120,6 +272,12 @@ public class VendaService {
 			invalido = Boolean.TRUE;
 
 		if (venda.getValorTotal() == null)
+			invalido = Boolean.TRUE;
+
+		if (venda.getStatusVendido() == null)
+			invalido = Boolean.TRUE;
+
+		if (venda.getStatusEspera() == null)
 			invalido = Boolean.TRUE;
 
 
@@ -152,7 +310,12 @@ public class VendaService {
 	public Venda remover(Long id){
 		Venda venda = this.getById(id);
 
+		configurarVendaProduto(venda);
+		buscarProduto(venda);
+		buscarCliente(venda);
+		adicionarQuantidade(venda);
 		vendaRepository.delete(venda);
+
 
 		return venda;
 	}
@@ -180,6 +343,14 @@ public class VendaService {
 			vazio = Boolean.FALSE;
 		}
 
+		if (filtroDTO.getStatusVendido()!=null) {
+			vazio = Boolean.FALSE;
+		}
+
+		if (filtroDTO.getStatusEspera()!=null) {
+			vazio = Boolean.FALSE;
+		}
+
 
 
 
@@ -187,6 +358,8 @@ public class VendaService {
 			throw new BusinessException(SistemaMessageCode.ERRO_FILTRO_INFORMAR_OUTRO);
 		}
 	}
+
+
 
 	/**
 	 * Retorna uma lista de {@link Venda} conforme o filtro de pesquisa informado.

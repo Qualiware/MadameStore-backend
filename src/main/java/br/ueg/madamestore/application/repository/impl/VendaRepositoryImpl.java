@@ -2,6 +2,9 @@ package br.ueg.madamestore.application.repository.impl;
 
 import br.ueg.madamestore.application.dto.FiltroProdutoDTO;
 import br.ueg.madamestore.application.dto.FiltroVendaDTO;
+import br.ueg.madamestore.application.enums.StatusEspera;
+import br.ueg.madamestore.application.enums.StatusSimNao;
+import br.ueg.madamestore.application.enums.StatusVendido;
 import br.ueg.madamestore.application.model.Produto;
 import br.ueg.madamestore.application.model.Venda;
 import br.ueg.madamestore.application.repository.VendaRepositoryCustom;
@@ -45,6 +48,10 @@ public class VendaRepositoryImpl implements VendaRepositoryCustom {
             jpql.append(" AND venda.dataVenda > :dataVenda ");
             parametros.put("dataVenda", filtroVendaDTO.getDataVenda());
         }
+
+
+
+
 
 
 
