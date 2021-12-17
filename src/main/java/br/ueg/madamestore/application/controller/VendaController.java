@@ -19,6 +19,8 @@ import br.ueg.madamestore.application.mapper.UsuarioMapper;
 import br.ueg.madamestore.application.mapper.VendaMapper;
 import br.ueg.madamestore.application.mapper.VendidoMapper;
 import br.ueg.madamestore.application.model.Amigo;
+import br.ueg.madamestore.application.mapper.UsuarioMapper;
+import br.ueg.madamestore.application.mapper.VendaMapper;
 import br.ueg.madamestore.application.model.Produto;
 import br.ueg.madamestore.application.model.Usuario;
 import br.ueg.madamestore.application.model.Venda;
