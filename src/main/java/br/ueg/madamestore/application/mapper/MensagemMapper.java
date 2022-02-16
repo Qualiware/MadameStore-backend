@@ -11,6 +11,7 @@ package br.ueg.madamestore.application.mapper;
 import br.ueg.madamestore.application.dto.MensagemDTO;
 import br.ueg.madamestore.application.dto.TelefoneUsuarioDTO;
 import br.ueg.madamestore.application.model.Mensagem;
+import br.ueg.madamestore.application.model.Produto;
 import br.ueg.madamestore.application.model.TelefoneUsuario;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,7 +21,8 @@ import org.mapstruct.Mapping;
  *
  * @author UEG
  */
-@Mapper(componentModel = "spring", uses = { UsuarioMapper.class })
+
+@Mapper(componentModel = "spring", uses = { Produto.class })
 public interface MensagemMapper {
 
 	/**
@@ -29,21 +31,21 @@ public interface MensagemMapper {
 	 * @param mensagem
 	 * @return
 	 */
-
-	@Mapping(source = "tipo.id", target = "idTipo")
-    @Mapping(source = "tipo.descricao", target = "descricaoTipo")
-	@Mapping(source = "produto.id", target = "idProduto")
+	// @Mapping(source = "tipo.descricao", target = "descricaoTipo")
 	@Mapping(source = "produto.nome", target = "nomeProduto")
+	@Mapping(source = "tipo.id", target = "tipo")
+	@Mapping(source = "produto.id", target = "idProduto")
 	public MensagemDTO toDTO(Mensagem mensagem);
 
 	/**
-	 * Converte o DTO {@link TelefoneUsuarioDTO} para entidade {@link TelefoneUsuario}.
+	 * Converte o DTO {@link MensagemDTO} para entidade {@link Mensagem}.
 	 * 
 	 * @param mensagemDTO
 	 * @return
 	 */
 
-	@Mapping(target = "tipo", expression = "java( TipoRetirada.getById( mensagemDTO.getIdTipo() ) )")
+	@Mapping(target = "tipo", expression = "java( TipoRetirada.getById( mensagemDTO.getTipo() ) )")
 	@Mapping(source = "mensagemDTO.idProduto", target = "produto.id")
+	@Mapping(source = "mensagemDTO.nomeProduto", target = "produto.nome")
 	public Mensagem toEntity(MensagemDTO mensagemDTO);
 }

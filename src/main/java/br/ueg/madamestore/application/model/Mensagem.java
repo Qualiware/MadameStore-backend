@@ -40,7 +40,7 @@ public @Data class Mensagem implements Serializable{
 
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TBL_MENSAGEM")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TBL_S_MENSAGEM")
 	@Column(name = "ID_MENSAGEM", nullable = false)
 	private Long id;
 

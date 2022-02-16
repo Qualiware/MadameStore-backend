@@ -19,7 +19,7 @@ import java.util.Optional;
 public interface MensagemRepository extends JpaRepository<Mensagem, Long>, MensagemRepositoryCustom{
 
     /**
-     * Retorna o número de {@link Venda} pelo 'nome' , desconsiderando o
+     * Retorna o número de {@link Mensagem} pelo 'nome' , desconsiderando o
      * 'Produto' com o 'id' informado.
      *
      *

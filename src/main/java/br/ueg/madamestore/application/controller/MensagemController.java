@@ -72,12 +72,13 @@ public class MensagemController extends AbstractController {
 	})
 	@PostMapping(path = "/", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<?> incluir(@ApiParam(value = "Informações da Venda", required = true) @Valid @RequestBody MensagemDTO mensagemDTO) {
-
 		Mensagem mensagem= mensagemMapper.toEntity(mensagemDTO);
-		if(mensagemDTO.getDescricaoTipo()==TipoRetirada.INCLUSAO.getDescricao()){
+		//Problema quanto ao PRODUTONOME, caso não seja solucionado comentar no DTO, Mapper e TODTO o nomeproduto.
+		if(mensagem.getTipo().getId()==TipoRetirada.INCLUSAO.getId()){
+
 			mensagemService.add(mensagem);
 		}
-		if(mensagemDTO.getDescricaoTipo()==TipoRetirada.PERDA.getDescricao()){
+		if(mensagem.getTipo().getId()==TipoRetirada.FURTO.getId()){
 			mensagemService.retira(mensagem);
 		}
 		mensagem = mensagemService.salvar(mensagem);
@@ -182,8 +183,9 @@ public class MensagemController extends AbstractController {
 	})
 	@GetMapping(path = "/filtro", produces = { MediaType.APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> getMensagemByFiltro(@ApiParam(value = "Filtro de pesquisa", required = true) @Valid @ModelAttribute("filtroDTO") final FiltroMensagemDTO filtroDTO) {
-		List<Mensagem> mensagens = mensagemService.getMensagemByFiltro(filtroDTO);
 		List<MensagemDTO> mensagensDTO = new ArrayList<>();
+		List<Mensagem> mensagens = mensagemService.getMensagemByFiltro(filtroDTO);
+
 		if(mensagens.size() > 0){
 			for (Mensagem g:
 

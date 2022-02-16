@@ -55,6 +55,7 @@ public class AppStartupRunner implements ApplicationRunner {
 
     @Autowired
     AmigoRepository amigoRepository;
+
     @Autowired
     MensagemRepository mensagemRepository;
 

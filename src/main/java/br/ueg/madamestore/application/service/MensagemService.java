@@ -57,7 +57,6 @@ public class MensagemService {
 
 
 		//validaTotalQuantidade(venda);
-		buscarProduto(mensagem);
 		validarCamposObrigatorios(mensagem);
 		mensagem= mensagemRepository.save(mensagem);
 		mensagem = mensagemRepository.findByIdFetch(mensagem.getId()).get();
@@ -162,10 +161,8 @@ public class MensagemService {
 		if(produto==null){
 			throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 		}
-
-		if(produto.getQuantidadeVendida()==null && produto.getQuantidade()> mensagem.getQuantidade()){
-			produto.setQuantidadeVendida(0);
-			produto.setQuantidade(produto.getQuantidade()-mensagem.getQuantidade());
+		if(produto.getQuantidade()>=mensagem.getQuantidade()) {
+			produto.setQuantidade(produto.getQuantidade() - mensagem.getQuantidade());
 		}
 
 	}
@@ -179,16 +176,10 @@ public class MensagemService {
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 
-		if(produto.getQuantidadeVendida()==null){
-			produto.setQuantidadeVendida(0);
-			produto.setQuantidade(produto.getQuantidade()+mensagem.getQuantidade());
-		}
+				produto.setQuantidade(produto.getQuantidade()+mensagem.getQuantidade());
+			}
 
 
-
-
-
-	}
 
 	public Mensagem remover(Long id){
 		Mensagem mensagem = this.getById(id);

@@ -38,10 +38,12 @@ public @Data class MensagemDTO implements Serializable {
 	private String id;
 
 	@ApiModelProperty(value = "Código do Tipo do Telefone")
-	private Long idTipo;
+	private Long tipo;
 
-	@ApiModelProperty(value = "Descrição do Tipo do Telefone")
-	private String descricaoTipo;
+
+
+	//@ApiModelProperty(value = "Descrição do Tipo do Telefone")
+	//private String descricaoTipo;
 
 
 	@ApiModelProperty(value = "Quantidade de retirada ou entrada")
