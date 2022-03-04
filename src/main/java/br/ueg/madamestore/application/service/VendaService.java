@@ -389,6 +389,8 @@ public class VendaService {
 		return vendaRepository.findById(id).orElse(null);
 	}
 
+	public List<Venda> getVendas() { return vendaRepository.getTodos(); }
+
 	/**
 	 * Retorna a instância de {@link Usuario} conforme o 'id' informado.
 	 * 

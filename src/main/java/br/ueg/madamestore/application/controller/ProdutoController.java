@@ -188,26 +188,18 @@ public class ProdutoController extends AbstractController {
         return ResponseEntity.ok(produtoMapper.toDTO(produto));
     }
 
-    /**
-     * Deixar de Ser amigo Produto do {@link Produto} pelo 'id' informado.
-     *
-     * @param id
-     * @return
-     */
-   /* @PreAuthorize("hasRole('ROLE_PRODUTO_STATUS')")
-    @ApiOperation(value = "Deixar de ser Produto do Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    // ESTATISTICS
+    @ApiOperation(value = "Retorna uma lista dos produtos mais vendidos.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Success", response = AmigoDTO.class),
+            @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
             @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
-            @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
-    })
-    @PutMapping(path = "/{id:[\\d]+}/deixar-amigo", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> deixarAmigo(@ApiParam(value = "Id do Amigo", required = true) @PathVariable final BigDecimal id) {
-        Validation.max("id", id, 99999999L);
-        Amigo amigo = amigoService.getById(id.longValue());
-        amigo.setAmigo(StatusSimNao.NAO);
-        amigoService.salvar(amigo);
-        return ResponseEntity.ok(amigoMapper.toDTO(amigo));
-    }*/
+            @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class) })
+    @RequestMapping(method = RequestMethod.GET, path = "/estatisticas/ranking", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getRanking() {
+        List<Produto> produtos = produtoService.getAllDesc();
+
+        return ResponseEntity.ok(produtos);
+    }
 
 }

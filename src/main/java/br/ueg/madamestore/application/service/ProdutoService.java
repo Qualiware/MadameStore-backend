@@ -190,4 +190,9 @@ public class ProdutoService {
         }
     }
 
+    // ESTATISTICA
+    public List<Produto> getAllDesc() {
+        return produtosRepository.getAllProdutosDesc();
+    }
+
 }

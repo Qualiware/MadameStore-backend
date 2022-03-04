@@ -52,4 +52,11 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>, Produto
             " WHERE produto.id = :idProduto ")
     public Optional<Produto> findByIdFetch( @Param("idProduto") final Long idProduto);
 
+
+    // ESTATISTICA
+    @Query("SELECT produto from Produto produto " +
+            " INNER JOIN FETCH produto.tipo tipo " +
+            " ORDER BY produto.quantidadeVendida DESC"
+    )
+    public List<Produto> getAllProdutosDesc();
 }

@@ -224,6 +224,28 @@ public class VendaController extends AbstractController {
 		return ResponseEntity.ok(vendasDTO);
 	}
 
+	@ApiOperation(value = "Recupera os vendas pelo Filtro Informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@GetMapping(path = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> getAll() {
+		List<Venda> vendas = vendaService.getVendas();
+		List<VendaDTO> vendasDTO = new ArrayList<>();
+		if(vendas.size() > 0){
+			for (Venda g:
+
+					vendas) {
+				VendaDTO vendaDTO = vendaMapper.toDTO(g);
+				vendasDTO.add(vendaDTO);
+			}
+		}
+
+		return ResponseEntity.ok(vendasDTO);
+	}
+
 
 
 	/**
