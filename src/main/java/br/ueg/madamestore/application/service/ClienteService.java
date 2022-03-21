@@ -3,6 +3,7 @@ package br.ueg.madamestore.application.service;
 import br.ueg.madamestore.application.dto.FiltroClienteDTO;
 import br.ueg.madamestore.application.exception.SistemaMessageCode;
 import br.ueg.madamestore.application.model.Cliente;
+import br.ueg.madamestore.application.model.Venda;
 import br.ueg.madamestore.application.repository.ClienteRepository;
 import br.ueg.madamestore.comum.exception.BusinessException;
 import br.ueg.madamestore.comum.util.CollectionUtil;
@@ -40,6 +41,8 @@ public class ClienteService {
 
         return clientes;
     }
+
+    public List<Cliente> getVendas() { return clientesRepository.getTodos(); }
 
     /**
      * Verifica se pelo menos um campo de pesquisa foi informado, e se informado o

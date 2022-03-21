@@ -357,4 +357,42 @@ public class VendaController extends AbstractController {
         return ResponseEntity.ok(vendaMapper.toDTO(venda));
     }
 
+	@ApiOperation(value = "Tonar Venda pendente pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+	})
+	@PutMapping(path = "/{id:[\\d]+}/finalizar", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> finalizarVenda(@ApiParam(value = "Id da Venda", required = true) @PathVariable final BigDecimal id) {
+		Validation.max("id", id, 99999999L);
+		Venda venda = vendaService.getById(id.longValue());
+		venda.setStatusEspera(StatusEspera.NAO);
+		venda.setStatusVendido(StatusVendido.SIM);
+		vendaService.salvar(venda);
+		return ResponseEntity.ok(vendaMapper.toDTO(venda));
+	}
+
+    @ApiOperation(value = "Inclui um novo Usuário na base de dados.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+            @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+    })
+    @PostMapping(path = "/incluir", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> incluirVenda(@ApiParam(value = "Informações da Venda", required = true) @Valid @RequestBody VendaDTO vendaDTO) {
+        vendaDTO.setStatusVendido(false);
+        vendaDTO.setStatusEspera(true);
+        Venda venda=vendaMapper.toEntity(vendaDTO);
+
+
+
+        //vendaService.configurarVendaProduto(venda);
+
+        venda = vendaService.salvar(venda);
+        vendaService.retiraQuantidade(venda);
+        vendaDTO = vendaMapper.toDTO(venda);
+        return ResponseEntity.ok(vendaDTO);
+    }
+
 }

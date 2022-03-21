@@ -1,5 +1,8 @@
 package br.ueg.madamestore.application.controller;
 
+import br.ueg.madamestore.application.dto.ClienteDTO;
+import br.ueg.madamestore.application.dto.VendaDTO;
+import br.ueg.madamestore.application.model.Cliente;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -200,6 +203,28 @@ public class ProdutoController extends AbstractController {
         List<Produto> produtos = produtoService.getAllDesc();
 
         return ResponseEntity.ok(produtos);
+    }
+
+    @ApiOperation(value = "Recupera os produtos pelo Filtro Informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+            @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+    })
+    @GetMapping(path = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getAll() {
+        List<Produto> produtos = produtoService.getTodos();
+        List<ProdutoDTO> produtosDTO = new ArrayList<>();
+        if(produtos.size() > 0){
+            for (Produto g:
+
+                    produtos) {
+                ProdutoDTO produtoDTO = produtoMapper.toDTO(g);
+                produtosDTO.add(produtoDTO);
+            }
+        }
+
+        return ResponseEntity.ok(produtosDTO);
     }
 
 }

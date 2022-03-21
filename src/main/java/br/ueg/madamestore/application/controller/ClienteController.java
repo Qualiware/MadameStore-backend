@@ -3,8 +3,10 @@ package br.ueg.madamestore.application.controller;
 import br.ueg.madamestore.api.util.Validation;
 import br.ueg.madamestore.application.dto.FiltroClienteDTO;
 import br.ueg.madamestore.application.dto.ClienteDTO;
+import br.ueg.madamestore.application.dto.VendaDTO;
 import br.ueg.madamestore.application.mapper.ClienteMapper;
 import br.ueg.madamestore.application.model.Cliente;
+import br.ueg.madamestore.application.model.Venda;
 import br.ueg.madamestore.application.service.ClienteService;
 import br.ueg.madamestore.comum.exception.MessageResponse;
 import io.swagger.annotations.*;
@@ -187,12 +189,6 @@ public class ClienteController extends AbstractController {
         return ResponseEntity.ok(clienteMapper.toDTO(cliente));
     }
 
-    /**
-     * Deixar de Ser amigo Cliente do {@link Cliente} pelo 'id' informado.
-     *
-     * @param id
-     * @return
-     */
    /* @PreAuthorize("hasRole('ROLE_CLIENTE_STATUS')")
     @ApiOperation(value = "Deixar de ser Cliente do Amigo pelo id informado.", produces = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponses({
@@ -208,5 +204,28 @@ public class ClienteController extends AbstractController {
         amigoService.salvar(amigo);
         return ResponseEntity.ok(amigoMapper.toDTO(amigo));
     }*/
+
+
+    @ApiOperation(value = "Recupera os clientes pelo Filtro Informado.", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Success", response = VendaDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+            @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class)
+    })
+    @GetMapping(path = "/all", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getAll() {
+        List<Cliente> clientes = clienteService.getTodos();
+        List<ClienteDTO> clientesDTO = new ArrayList<>();
+        if(clientes.size() > 0){
+            for (Cliente g:
+
+                    clientes) {
+                ClienteDTO clienteDTO = clienteMapper.toDTO(g);
+                clientesDTO.add(clienteDTO);
+            }
+        }
+
+        return ResponseEntity.ok(clientesDTO);
+    }
 
 }
