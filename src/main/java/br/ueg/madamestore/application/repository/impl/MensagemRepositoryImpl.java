@@ -25,6 +25,7 @@ public class MensagemRepositoryImpl implements MensagemRepositoryCustom {
         Map<String, Object> parametros = new HashMap<>();
         StringBuilder jpql = new StringBuilder();
         jpql.append(" SELECT DISTINCT mensagem FROM Mensagem mensagem");
+        jpql.append(" JOIN FETCH mensagem.produto");
         jpql.append(" WHERE 1=1 ");
 
 

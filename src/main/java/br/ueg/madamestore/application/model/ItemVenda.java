@@ -40,6 +40,16 @@ public @Data class ItemVenda implements Serializable {
 	@JoinColumn(name = "ID_PRODUTO", referencedColumnName = "ID_PRODUTO", nullable = false)
 	private Produto produto;
 
-	@Column(name="QUANTIDADE", nullable = false)
+	@Column(name="PRECOPRODUTO", nullable = true)
+	private Double precoProduto;
+
+	@Column(name="VALORLIQUIDO", nullable = true)
+	private Double valorLiquido;
+
+	@Column(name="TIPOPRODUTO", nullable = true)
+	private String tipoProduto;
+
+
+	@Column(name="QUANTIDADE", nullable = true)
 	private Integer quantidadeVendida;
 }

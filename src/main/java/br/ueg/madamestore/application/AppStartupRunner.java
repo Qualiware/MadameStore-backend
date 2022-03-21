@@ -59,6 +59,9 @@ public class AppStartupRunner implements ApplicationRunner {
     @Autowired
     MensagemRepository mensagemRepository;
 
+    @Autowired
+    ClienteRepository clienteRepository;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         LOG.info("Application started with option names : {}",
@@ -108,6 +111,7 @@ public class AppStartupRunner implements ApplicationRunner {
         Grupo grupoFuncionario = createCrupoFuncionario(Arrays.asList(moduloTipoProdutoFuncionario, moduloProdutoFuncionaro, moduloVendaFuncionario, moduloClienteFuncionario));
 
         createUsuarioAdmin(grupoAdmin);
+        createCliente();
     }
 
     /**
@@ -247,6 +251,17 @@ public class AppStartupRunner implements ApplicationRunner {
         usuario.setGrupos(usuarioGrupos);
         usuario = usuarioRepository.save(usuario);
     }
+    private void createCliente() {
+        LocalDate.now();
+        Cliente cliente = new Cliente();
+        cliente.setEmail("sememail");
+        cliente.setNome("Sem Cliente");
+        cliente.setTelefone("62991261326");
+        cliente.setDataCadastro(LocalDate.of(2000,04,12));
+
+        cliente = clienteRepository.save(cliente);
+
+    }
 
     private Grupo createGrupoAdmin(List<Modulo> modulos) {
         Grupo grupo = new Grupo();
@@ -295,6 +310,8 @@ public class AppStartupRunner implements ApplicationRunner {
         return grupo; 
     }
 
+
+
     private Grupo createCrupoFuncionario(List<Modulo> modulos) {
         Grupo grupo = new Grupo();
         grupo.setNome("Funcionários");
@@ -303,18 +320,18 @@ public class AppStartupRunner implements ApplicationRunner {
         grupo.setStatus(StatusAtivoInativo.ATIVO);
         grupo = grupoRepository.save(grupo);
         final Grupo lGrupo = grupo;
-        
+
         grupo.setGrupoFuncionalidades(new HashSet<>());
 
         modulos.forEach(modulo -> {
             lGrupo.getGrupoFuncionalidades().addAll(
-                modulo.getFuncionalidades().stream().map(
-                    funcionalidade -> new GrupoFuncionalidade(null, lGrupo, funcionalidade)
-                ).collect(Collectors.toSet())
+                    modulo.getFuncionalidades().stream().map(
+                            funcionalidade -> new GrupoFuncionalidade(null, lGrupo, funcionalidade)
+                    ).collect(Collectors.toSet())
             );
         });
 
-        
+
         grupoRepository.save(grupo);
         return grupo;
     }

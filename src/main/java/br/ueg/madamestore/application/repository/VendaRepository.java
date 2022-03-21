@@ -50,4 +50,5 @@ public interface VendaRepository extends JpaRepository<Venda, Long>, VendaReposi
             " WHERE venda.id = :idVenda ")
     public Optional<Venda> findByIdFetch( @Param("idVenda") final Long idVenda);
 
+
 }

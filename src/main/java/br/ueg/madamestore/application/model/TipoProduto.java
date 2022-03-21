@@ -21,4 +21,7 @@ class TipoProduto {
     @Column(name = "NOME_TIPO_PRODUTO", length = 100, nullable = false)
     private String nome;
 
+    @Column(name = "VALOR", length = 100, nullable=true)
+    private Integer valor;
+
 }

@@ -51,7 +51,7 @@ public @Data class Mensagem implements Serializable{
 	private Integer quantidade;
 
 	@Column(name = "DESCRICAO")
-	private String descricao;
+	private String descricaoMensagem;
 
 	@Convert(converter = TipoRetiradaConverter.class)
 	@Column(name = "TIPO", length = 1)

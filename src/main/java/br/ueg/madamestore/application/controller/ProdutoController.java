@@ -195,9 +195,10 @@ public class ProdutoController extends AbstractController {
             @ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
             @ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
             @ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class) })
-    @RequestMapping(method = RequestMethod.GET, path = "/estatisticas/ranking", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/ranking",produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getRanking() {
         List<Produto> produtos = produtoService.getAllDesc();
+        System.out.println(produtos);
 
         return ResponseEntity.ok(produtos);
     }

@@ -9,10 +9,7 @@
 package br.ueg.madamestore.application.controller;
 
 import br.ueg.madamestore.api.util.Validation;
-import br.ueg.madamestore.application.dto.FiltroMensagemDTO;
-import br.ueg.madamestore.application.dto.FiltroVendaDTO;
-import br.ueg.madamestore.application.dto.MensagemDTO;
-import br.ueg.madamestore.application.dto.VendaDTO;
+import br.ueg.madamestore.application.dto.*;
 import br.ueg.madamestore.application.enums.StatusEspera;
 import br.ueg.madamestore.application.enums.StatusVendido;
 import br.ueg.madamestore.application.enums.TipoRetirada;
@@ -77,11 +74,26 @@ public class MensagemController extends AbstractController {
 		if(mensagem.getTipo().getId()==TipoRetirada.INCLUSAO.getId()){
 
 			mensagemService.add(mensagem);
-		}
-		if(mensagem.getTipo().getId()==TipoRetirada.FURTO.getId()){
+			if(mensagem.getDescricaoMensagem()!=null){
+			mensagem.setDescricaoMensagem(mensagem.getDescricaoMensagem()+" O Produto "+mensagem.getProduto().getNome()+" sofreu alteração na data "+mensagem.getDataAlteracao()+" e foi adicionado "+mensagem.getQuantidade());
+			}
+			else{
+				mensagem.setDescricaoMensagem(" O Produto "+mensagem.getProduto().getNome()+" sofreu alteração na data "+mensagem.getDataAlteracao()+" e foi adicionado "+mensagem.getQuantidade());
+			}
+
+		}else{
 			mensagemService.retira(mensagem);
-		}
+			if(mensagem.getDescricaoMensagem()!=null) {
+				mensagem.setDescricaoMensagem(mensagem.getDescricaoMensagem() + " O Produto " + mensagem.getProduto().getNome() + " sofreu alteração na data " + mensagem.getDataAlteracao() + " e foi retirado " + mensagem.getQuantidade() + " produtos, por " + mensagem.getTipo().getDescricao());
+			}
+			else {
+
+				mensagem.setDescricaoMensagem(" O Produto " + mensagem.getProduto().getNome() + " sofreu alteração na data " + mensagem.getDataAlteracao() + " e foi retirado " + mensagem.getQuantidade() + " produtos, por " + mensagem.getTipo().getDescricao());
+			}
+			}
+
 		mensagem = mensagemService.salvar(mensagem);
+
 		mensagemDTO = mensagemMapper.toDTO(mensagem);
 		return ResponseEntity.ok(mensagemDTO);
 	}
@@ -197,5 +209,28 @@ public class MensagemController extends AbstractController {
 
 		return ResponseEntity.ok(mensagensDTO);
 	}
+
+
+	@ApiOperation(value = "Retorna uma lista dos produtos mais vendidos.", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	@ApiResponses({
+			@ApiResponse(code = 200, message = "Success", response = ProdutoDTO.class),
+			@ApiResponse(code = 400, message = "Bad Request", response = MessageResponse.class),
+			@ApiResponse(code = 404, message = "Not Found", response = MessageResponse.class) })
+	@GetMapping(path = "/mensagemClientes",produces = { MediaType.APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> getClientes() {
+		List<Integer> valorPorcentagem= null;
+		List<Mensagem> mensagens= mensagemService.getMensagem();
+		List<MensagemDTO> mensagemsDTO = new ArrayList<>();
+		if(mensagens.size() > 0){
+			for (Mensagem g:
+
+					mensagens) {
+				MensagemDTO mensagemDTO = mensagemMapper.toDTO(g);
+				mensagemsDTO.add(mensagemDTO);
+			}
+		}
+		return ResponseEntity.ok(mensagemsDTO);
+	}
+
 
 }
