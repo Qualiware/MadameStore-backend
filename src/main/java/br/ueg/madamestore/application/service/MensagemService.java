@@ -40,6 +40,9 @@ public class MensagemService {
 	@Autowired
 	private ProdutoRepository produtoRepository;
 
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+
 
 	@Autowired
 	private AuthService authService;
@@ -55,7 +58,6 @@ public class MensagemService {
 	public Mensagem salvar(Mensagem mensagem) {
 
 
-
 		//validaTotalQuantidade(venda);
 		validarCamposObrigatorios(mensagem);
 		mensagem= mensagemRepository.save(mensagem);
@@ -63,7 +65,7 @@ public class MensagemService {
 		return mensagem;
 	}
 
-
+	public List<Mensagem> getMensagem() { return mensagemRepository.getTodos(); }
 
 
 

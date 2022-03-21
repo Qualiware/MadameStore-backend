@@ -27,6 +27,9 @@ class VendaDTO implements Serializable {
     private List<ItemVendaDTO> itemVenda;
 
 
+
+
+
     //
     @ApiModelProperty(value = "Id do Cliente")
     private Long idCliente;

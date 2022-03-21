@@ -16,10 +16,7 @@ import br.ueg.madamestore.application.enums.StatusSimNao;
 import br.ueg.madamestore.application.enums.StatusVendido;
 import br.ueg.madamestore.application.exception.SistemaMessageCode;
 import br.ueg.madamestore.application.model.*;
-import br.ueg.madamestore.application.repository.ClienteRepository;
-import br.ueg.madamestore.application.repository.ItemVendaRepository;
-import br.ueg.madamestore.application.repository.ProdutoRepository;
-import br.ueg.madamestore.application.repository.VendaRepository;
+import br.ueg.madamestore.application.repository.*;
 import br.ueg.madamestore.comum.exception.BusinessException;
 import br.ueg.madamestore.comum.util.CollectionUtil;
 import br.ueg.madamestore.comum.util.Util;
@@ -57,6 +54,9 @@ public class VendaService {
 
 	@Autowired
 	private ItemVendaRepository itemVendaRepository;
+
+	@Autowired
+	private TipoProdutoRepository tipoProdutoRepository;
 
 	@Autowired
 	private AuthService authService;
@@ -131,18 +131,24 @@ public class VendaService {
 
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
-
+			TipoProduto tipo;
 			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			tipo=tipoProdutoRepository.getOne(produto.getTipo().getId());
 			if(produto==null){
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 			else{
-				if(produto.getQuantidadeVendida()==null){
+				if(produto.getQuantidadeVendida()==null ){
 					produto.setQuantidadeVendida(0);
+
+				}
+				if(tipo.getValor()==null){
+					tipo.setValor(0);
 				}
 				if(produto.getQuantidade()>=itemVenda.getQuantidadeVendida()){
 					produto.setQuantidade(produto.getQuantidade()-itemVenda.getQuantidadeVendida());
 					produto.setQuantidadeVendida(produto.getQuantidadeVendida()+itemVenda.getQuantidadeVendida());
+					tipo.setValor(tipo.getValor()+ itemVenda.getQuantidadeVendida());
 				}
 
 			}
@@ -159,8 +165,10 @@ public class VendaService {
 
 		for (ItemVenda itemVenda : venda.getItemVenda()) {
 			Produto produto;
-
+			TipoProduto tipo;
 			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			tipo=tipoProdutoRepository.getOne(produto.getTipo().getId());
+
 			if(produto==null){
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
@@ -168,8 +176,12 @@ public class VendaService {
 				if(produto.getQuantidadeVendida()==null){
 					produto.setQuantidadeVendida(0);
 				}
+				if(tipo.getValor()==null){
+					tipo.setValor(0);
+				}
 				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
 				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
+				tipo.setValor(tipo.getValor()-itemVenda.getQuantidadeVendida());
 			}
 			itemVenda.setProduto(produto);
 		}
@@ -203,10 +215,17 @@ public class VendaService {
 			Produto produto;
 
 			produto= produtoRepository.getOne(itemVenda.getProduto().getId());
+			TipoProduto tipo;
+			tipo= tipoProdutoRepository.getOne(produto.getTipo().getId());
 			if(produto==null){
 				throw new BusinessException(SistemaMessageCode.ERRO_PRODUTO_NAO_ENCONTRADO);
 			}
 			itemVenda.setProduto(produto);
+			itemVenda.setValorLiquido(produto.getVliquido());
+			itemVenda.setPrecoProduto(produto.getPreco());
+			itemVenda.setTipoProduto(tipo.getNome());
+
+			
 
 		}
 	}
@@ -228,6 +247,7 @@ public class VendaService {
 				System.out.println("ENTROU 1111111111");
 				produto.setQuantidade(produto.getQuantidade()+itemVenda.getQuantidadeVendida());
 				produto.setQuantidadeVendida(produto.getQuantidadeVendida()-itemVenda.getQuantidadeVendida());
+				
 			}
 			itemVenda.setProduto(produto);
 		}
@@ -242,8 +262,6 @@ public class VendaService {
 	 * @param venda
 */
 	public void configurarVendaProduto(Venda venda) {
-
-
 		for (ItemVenda itemVenda : venda.getItemVenda()){
 			itemVenda.setVenda(venda);
 		}
@@ -317,6 +335,11 @@ public class VendaService {
 		return venda;
 	}
 
+
+	// ESTATISTICA
+	public List<Venda> getAllDesc() {
+		return vendaRepository.getTodos();
+	}
     /**
      * Verifica se pelo menos um campo de pesquisa foi informado, e se informado o
      * nome do Grupo, verifica se tem pelo meno 4 caracteres.
@@ -401,6 +424,28 @@ public class VendaService {
 		return vendaRepository.findByIdFetch(id).orElse(null);
 	}
 
+	public List<Integer> porcentagemClientes(List<Venda> vendas) {
+		List<Integer> porcentagem= new ArrayList<>();
+		Integer contadorSemCliente=0;
+		Integer contadorCliente=0;
+		for(int i=0; i<=vendas.size();i++){
+			Venda venda;
+			venda =vendas.get(i);
+			if(venda.getCliente().equals("Sem Cliente")){
+				contadorSemCliente++;
+				porcentagem.set(0, contadorSemCliente);
+			}
+			else{
+				contadorCliente++;
+				porcentagem.set(1,contadorCliente);
+			}
+		}
+
+
+
+
+		return porcentagem;
+	}
 
 
 	/**

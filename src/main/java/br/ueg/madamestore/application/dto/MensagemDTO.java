@@ -58,6 +58,9 @@ public @Data class MensagemDTO implements Serializable {
 
 	@ApiModelProperty(value = "Nome do produto")
 	private String nomeProduto;
+
+	@ApiModelProperty(value = "Descricao")
+	private String descricaoMensagem;
 	/**
 	 * @return the id
 	 */

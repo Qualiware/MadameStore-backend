@@ -45,6 +45,8 @@ public @Data class ItemVendaDTO implements Serializable {
 	@ApiModelProperty(value = "preco do produto")
 	private Double preco;
 
+	@ApiModelProperty(value = "quantidade do produto")
+	private String valorLiquido;
 
 	@ApiModelProperty(value = "quantidade do produto")
 	private String quantidade;
@@ -52,9 +54,18 @@ public @Data class ItemVendaDTO implements Serializable {
 	@ApiModelProperty(value = "quantidade do produto vendida")
 	private String quantidadeVendida;
 
+	@ApiModelProperty(value = "quantidade do produto vendida")
+	private String precoProduto;
+
+	@ApiModelProperty(value = "quantidade do produto vendida")
+	private String tipoProduto;
+
+
 
 	@ApiModelProperty(value = "valor liquido do produto")
 	private String vliquido;
+
+
 
 
 

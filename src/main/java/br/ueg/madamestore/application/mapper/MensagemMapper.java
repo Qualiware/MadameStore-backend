@@ -35,6 +35,7 @@ public interface MensagemMapper {
 	@Mapping(source = "produto.nome", target = "nomeProduto")
 	@Mapping(source = "tipo.id", target = "tipo")
 	@Mapping(source = "produto.id", target = "idProduto")
+
 	public MensagemDTO toDTO(Mensagem mensagem);
 
 	/**
@@ -47,5 +48,6 @@ public interface MensagemMapper {
 	@Mapping(target = "tipo", expression = "java( TipoRetirada.getById( mensagemDTO.getTipo() ) )")
 	@Mapping(source = "mensagemDTO.idProduto", target = "produto.id")
 	@Mapping(source = "mensagemDTO.nomeProduto", target = "produto.nome")
+
 	public Mensagem toEntity(MensagemDTO mensagemDTO);
 }

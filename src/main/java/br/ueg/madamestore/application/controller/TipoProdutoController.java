@@ -167,4 +167,7 @@ public class TipoProdutoController extends AbstractController {
         return ResponseEntity.ok(tipoProduto);
     }
 
+
+
+
 }

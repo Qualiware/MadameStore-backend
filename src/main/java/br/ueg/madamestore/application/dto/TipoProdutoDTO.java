@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 @NoArgsConstructor
@@ -19,5 +20,11 @@ class TipoProdutoDTO implements Serializable {
 
     @ApiModelProperty(value = "Nome do Tipo Produto")
     private String nome;
+
+    @ApiModelProperty(value= "Valor")
+    private String valor;
+
+    @ApiModelProperty(value= "Valor")
+    private String tipoProduto;
 
 }

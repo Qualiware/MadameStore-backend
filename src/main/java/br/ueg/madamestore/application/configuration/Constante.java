@@ -44,7 +44,7 @@ public final class Constante {
 	public static final String CRIACAO_USUARIO_TEMPLATE = "criacaoUsuario.html";
 	public static final String ESQUECI_SENHA_TEMPLATE = "esqueciSenha.html";
 	public static final String CRIACAO_USUARIO_ASSUNTO = "Criação de usuário para acesso ao Portal – UEG";
-	public static final String ESQUECI_SENHA_ASSUNTO = "Recuperação de senha de acesso ao Portal – UEG";
+	public static final String ESQUECI_SENHA_ASSUNTO = "Redefinição de senha de acesso ao MadameStore";
 	public static final String DATABASE_OWNER = "public";
 
 
